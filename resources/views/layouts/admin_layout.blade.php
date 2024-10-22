@@ -8,6 +8,7 @@
     <title>Pendaftaran Les</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Favicons -->
     <link href="{{ url('assets/img/favicon.png') }}" rel="icon">
@@ -30,7 +31,7 @@
 
     <!-- Template Main CSS File -->
     <link href="{{ url('assets/css/style.css') }}" rel="stylesheet">
-
+    @vite('resources/js/app.js')
 </head>
 
 <body>
@@ -127,9 +128,21 @@
     <aside id="sidebar" class="sidebar">
         <ul class="sidebar-nav" id="sidebar-nav">
             <li class="nav-item">
-                <a class="nav-link collapsed" href="{{ url('jkajk') }}">
+                <a class="nav-link collapsed" href="{{ url('admin') }}">
                     <i class="bi bi-grid"></i>
                     <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{{ url('admin/akun') }}">
+                    <i class="bi bi-people-fill"></i>
+                    <span>Akun</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{{ url('admin/petugas') }}">
+                    <i class="bi bi-file-earmark-person-fill"></i>
+                    <span>Petugas</span>
                 </a>
             </li>
         </ul>
@@ -158,7 +171,6 @@
 
     <!-- Template Main JS File -->
     <script src="{{ url('assets/js/main.js') }}"></script>
-
 </body>
 
 </html>
