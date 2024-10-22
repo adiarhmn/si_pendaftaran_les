@@ -20,35 +20,42 @@
                     <a href="{{ url('admin/akun/create') }}" class="btn btn-primary">Tambah Akun</a>
                 </div>
 
+                {{-- @Table --}}
                 <table class="table">
                     <thead>
                         <tr>
                             <th scope="col">No</th>
                             <th scope="col">Username</th>
                             <th scope="col">Password</th>
+                            <th scope="col">Level</th>
                             <th scope="col">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Brandon Jacob</td>
-                            <td>Designer</td>
-                            <td>
-                                <a href="{{ url('admin/akun/1/edit') }}" class="btn btn-warning">Edit</a>
-                                <button type="button" class="btn btn-danger"
-                                    onclick="confirmDelete('Adi', '{{ url('admin/akun/delete/1') }}')">Hapus</button>
+                        @foreach ($list_akun as $index => $item)
+                            <tr>
+                                <th scope="row">{{ $index + 1 }}</th>
+                                <td>{{ $item->username }}</td>
+                                <td>Password Hidden</td>
+                                <td>{{ $item->level }}</td>
+                                <td>
+                                    <a href="{{ url('admin/akun/edit/' . $item->id_akun) }}" class="btn btn-warning">Edit</a>
+                                    <button type="button" class="btn btn-danger"
+                                        onclick="confirmDelete('{{ $item->username }}', '{{ url('admin/akun/delete/' . $item->id_akun) }}')">Hapus</button>
 
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
+                {{-- End Table --}}
+
             </div>
         </div>
     </section>
 @endsection
 
-{{-- Fungsi Delete --}}
+{{-- @Fungsi Delete --}}
 @section('script')
     @include('components/notifications')
     @include('components/confirm_delete')

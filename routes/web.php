@@ -9,8 +9,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::group(['prefix' => 'admin'], function () {
-    // Menampilkan halaman dashboard
-    Route::get('/', [DashboardController::class, 'indexAdmin']);                 // Menampilkan halaman dashboard
+    Route::get('/', [DashboardController::class, 'indexAdmin']);            // Menampilkan halaman dashboard
 
     // Kelola Akun (CRUD)
     Route::group(['prefix' => 'akun'], function () {
