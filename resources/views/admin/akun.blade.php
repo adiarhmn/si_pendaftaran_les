@@ -25,7 +25,7 @@
                 <form class="input-group mb-3" style="max-width:350px; " action="{{ url()->current() }}">
                     <input value="{{ request()->query('query') }}" type="text" name="query" type="text"
                         class="form-control" placeholder="Cari..." aria-label="Cari..." aria-describedby="button-addon2">
-                    <button class="btn btn-outline-primary" type="button" id="button-addon2"><i
+                    <button class="btn btn-outline-primary" type="submit" id="button-addon2"><i
                             class="bi bi-search"></i></button>
                 </form>
 

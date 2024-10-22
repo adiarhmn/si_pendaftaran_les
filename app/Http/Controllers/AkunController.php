@@ -14,7 +14,9 @@ class AkunController extends Controller
     {
         $query = $request->input('query') ?? null;
         if ($query) {
-            $list_akun = AkunModel::where('username', 'like', '%' . $query . '%')->paginate(5);
+            $list_akun = AkunModel::where('username', 'like', '%' . $query . '%')
+            ->orWhere('level', 'like', '%' . $query . '%')
+            ->paginate(5);
         } else {
             $list_akun = AkunModel::paginate(5);
         }
