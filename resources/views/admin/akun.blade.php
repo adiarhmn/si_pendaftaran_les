@@ -15,10 +15,19 @@
     <section class="section">
         <div class="card">
             <div class="card-body">
+                {{-- @Head Card --}}
                 <div class="d-flex justify-content-between align-items-center">
                     <h5 class="card-title">Daftar Data Akun</h5>
                     <a href="{{ url('admin/akun/create') }}" class="btn btn-primary">Tambah Akun</a>
                 </div>
+
+                {{-- @Search Bar --}}
+                <form class="input-group mb-3" style="max-width:350px; " action="{{ url()->current() }}">
+                    <input value="{{ request()->query('query') }}" type="text" name="query" type="text"
+                        class="form-control" placeholder="Cari..." aria-label="Cari..." aria-describedby="button-addon2">
+                    <button class="btn btn-outline-primary" type="button" id="button-addon2"><i
+                            class="bi bi-search"></i></button>
+                </form>
 
                 {{-- @Table --}}
                 <table class="table">
@@ -52,7 +61,7 @@
                 {{-- End Table --}}
 
                 {{-- Paginate --}}
-                {{ $list_akun->links('components/pagination') }}
+                {{ $list_akun->appends(request()->query())->links('components/pagination') }}
             </div>
         </div>
     </section>

@@ -10,9 +10,14 @@ class AkunController extends Controller
 {
     // ====================================================================================================
     // @METHOD index() akan menampilkan data akun dari database
-    public function index()
+    public function index(Request $request)
     {
-        $list_akun = AkunModel::paginate(5); // Mengambil semua data akun dari database
+        $query = $request->input('query') ?? null;
+        if ($query) {
+            $list_akun = AkunModel::where('username', 'like', '%' . $query . '%')->paginate(5);
+        } else {
+            $list_akun = AkunModel::paginate(5);
+        }
 
         // Menampilkan halaman akun dan passing data akun
         return view('admin/akun', [
