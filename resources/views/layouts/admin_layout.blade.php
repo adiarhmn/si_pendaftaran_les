@@ -31,7 +31,9 @@
 
     <!-- Template Main CSS File -->
     <link href="{{ url('assets/css/style.css') }}" rel="stylesheet">
-    @vite('resources/js/app.js')
+
+    {{-- Sweet Alert CSS --}}
+    <link rel="stylesheet" href="{{ url('assets/sweetalert2/dist-alert/sweetalert2.min.css') }}">
 </head>
 
 <body>
@@ -171,6 +173,12 @@
 
     <!-- Template Main JS File -->
     <script src="{{ url('assets/js/main.js') }}"></script>
+
+    {{-- Sweetalert --}}
+    <script src="{{ url('assets/sweetalert2/dist-alert/sweetalert2.min.js') }}"></script>
+
+
+    @yield('script')
 </body>
 
 </html>

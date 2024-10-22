@@ -16,6 +16,6 @@ class AkunController extends Controller
     // @METHOD delete() akan menghapus data akun dari database
     public function delete($id)
     {
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Data akun berhasil dihapus');
     }
 }

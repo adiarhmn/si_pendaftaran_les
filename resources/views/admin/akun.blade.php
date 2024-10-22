@@ -36,9 +36,8 @@
                             <td>Designer</td>
                             <td>
                                 <a href="{{ url('admin/akun/1/edit') }}" class="btn btn-warning">Edit</a>
-                                <!-- Tombol Hapus -->
                                 <button type="button" class="btn btn-danger"
-                                    onclick="confirmDelete('Adi', '{{url('admin/akun/delete/1')}}')">Hapus</button>
+                                    onclick="confirmDelete('Adi', '{{ url('admin/akun/delete/1') }}')">Hapus</button>
 
                             </td>
                         </tr>
@@ -47,4 +46,10 @@
             </div>
         </div>
     </section>
+@endsection
+
+{{-- Fungsi Delete --}}
+@section('script')
+    @include('components/notifications')
+    @include('components/confirm_delete')
 @endsection
