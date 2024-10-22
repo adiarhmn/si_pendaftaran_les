@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AkunRequest;
 use App\Models\AkunModel;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class AkunController extends Controller
 {
@@ -13,7 +12,7 @@ class AkunController extends Controller
     // @METHOD index() akan menampilkan data akun dari database
     public function index()
     {
-        $list_akun = AkunModel::all(); // Mengambil semua data akun dari database
+        $list_akun = AkunModel::paginate(5); // Mengambil semua data akun dari database
 
         // Menampilkan halaman akun dan passing data akun
         return view('admin/akun', [
@@ -80,7 +79,7 @@ class AkunController extends Controller
     // @METHOD delete() akan menghapus data akun dari database
     public function delete($id)
     {
-        // Mengambil Data Akun
+        // Mengambil Data Akun Sesuai ID Primary Key
         $akun = AkunModel::find($id);
 
         // Menghapus Data Akun

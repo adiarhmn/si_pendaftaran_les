@@ -34,12 +34,13 @@
                     <tbody>
                         @foreach ($list_akun as $index => $item)
                             <tr>
-                                <th scope="row">{{ $index + 1 }}</th>
+                                <th scope="row">{{ $index + 1 + (($_GET['page'] ?? 1) - 1) * 5 }}</th>
                                 <td>{{ $item->username }}</td>
                                 <td>Password Hidden</td>
                                 <td>{{ $item->level }}</td>
                                 <td>
-                                    <a href="{{ url('admin/akun/edit/' . $item->id_akun) }}" class="btn btn-warning">Edit</a>
+                                    <a href="{{ url('admin/akun/edit/' . $item->id_akun) }}"
+                                        class="btn btn-warning">Edit</a>
                                     <button type="button" class="btn btn-danger"
                                         onclick="confirmDelete('{{ $item->username }}', '{{ url('admin/akun/delete/' . $item->id_akun) }}')">Hapus</button>
 
@@ -50,6 +51,8 @@
                 </table>
                 {{-- End Table --}}
 
+                {{-- Paginate --}}
+                {{ $list_akun->links('components/pagination') }}
             </div>
         </div>
     </section>

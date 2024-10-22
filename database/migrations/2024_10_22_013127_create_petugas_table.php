@@ -24,9 +24,6 @@ return new class extends Migration
             //Membuat kolom alamat
             $table->text('alamat');
 
-            //Membuat kolom status
-            $table->enum('status', ['aktif', 'tidak aktif']);
-
             //Membuat Foreign Key
             $table->unsignedBigInteger('id_akun');
             $table->foreign('id_akun')
