@@ -15,4 +15,9 @@ class AkunModel extends Model
     ];
 
     public $timestamps = true;
+
+    public function petugas()
+    {
+        return $this->hasOne(PetugasModel::class, 'id_akun', 'id_akun');
+    }
 }

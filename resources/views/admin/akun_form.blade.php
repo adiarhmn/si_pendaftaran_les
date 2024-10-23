@@ -71,7 +71,7 @@
                     {{-- Tombol Simpan dan Batal --}}
                     <div class="d-flex gap-2">
                         <button type="submit" class="btn btn-primary">Simpan</button>
-                        <button type="reset" class="btn btn-secondary">Batal</button>
+                        <a href="{{url('admin/akun')}}" class="btn btn-secondary">Batal</a>
                     </div>
                 </form>
                 <!-- End Form -->

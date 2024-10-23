@@ -30,7 +30,8 @@ class PetugasRequest extends FormRequest
             'telp' => [
                 'required',
                 'numeric',
-                'digits_between:10,13',
+                'digits_between:10,16',
+                'unique:petugas,telp,' . $id . ',id_petugas',
             ],
             'alamat' => [
                 'required',
@@ -39,6 +40,7 @@ class PetugasRequest extends FormRequest
             'id_akun' => [
                 'required',
                 'exists:akun,id_akun',
+                'unique:petugas,id_akun,' . $id . ',id_petugas',
             ],
         ];
     }

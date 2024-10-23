@@ -124,19 +124,20 @@
     <aside id="sidebar" class="sidebar">
         <ul class="sidebar-nav" id="sidebar-nav">
             <li class="nav-item">
-                <a class="nav-link collapsed" href="{{ url('admin') }}">
+                <a class="nav-link {{ Request::is('admin') ? 'active' : 'collapsed' }}" href="{{ url('admin') }}">
                     <i class="bi bi-grid"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link collapsed" href="{{ url('admin/akun') }}">
+                <a class="nav-link {{ Request::is('admin/akun*') ? 'active' : 'collapsed' }}"
+                    href="{{ url('admin/akun') }}">
                     <i class="bi bi-people-fill"></i>
                     <span>Akun</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link collapsed" href="{{ url('admin/petugas') }}">
+                <a class="nav-link  {{ Request::is('admin/petugas*') ? 'active' : 'collapsed' }}" href="{{ url('admin/petugas') }}">
                     <i class="bi bi-file-earmark-person-fill"></i>
                     <span>Petugas</span>
                 </a>

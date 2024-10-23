@@ -12,9 +12,13 @@ class PetugasModel extends Model
         'nama_petugas',
         'telp',
         'alamat',
-        'status',
         'id_akun',
     ];
 
     public $timestamps = true;
+
+    public function akun()
+    {
+        return $this->belongsTo(AkunModel::class, 'id_akun', 'id_akun');
+    }
 }

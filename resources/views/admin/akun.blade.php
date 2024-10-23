@@ -30,7 +30,7 @@
                 </form>
 
                 {{-- @Table --}}
-                <table class="table">
+                <table class="table border">
                     <thead>
                         <tr>
                             <th scope="col">No</th>
@@ -59,6 +59,11 @@
                     </tbody>
                 </table>
                 {{-- End Table --}}
+
+                {{-- @Jika Data Tidak Ada --}}
+                @if (count($list_akun) == 0)
+                    <div class="alert alert-warning text-center">Data Tidak Ditemukan</div>
+                @endif
 
                 {{-- Paginate --}}
                 {{ $list_akun->appends(request()->query())->links('components/pagination') }}

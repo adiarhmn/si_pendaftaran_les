@@ -26,9 +26,9 @@
                     {{-- Nama Lengkap Input --}}
                     <div class="col-12">
                         <label for="nama_petugas" class="form-label">Nama Lengkap</label>
-                        <input name="nama_petugas" value="{{ old('nama_petugas', $akun->nama_petugas ?? '') }}"
-                            type="text" class="form-control @error('nama_petugas') is-invalid @enderror"
-                            id="nama_petugas" placeholder="Masukkan Nama Lengkap Petugas">
+                        <input name="nama_petugas" value="{{ old('nama_petugas', $petugas->nama_petugas ?? '') }}" type="text"
+                            class="form-control @error('nama_petugas') is-invalid @enderror" id="nama_petugas"
+                            placeholder="Masukkan Nama Lengkap Petugas">
                         @error('nama_petugas')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -39,7 +39,7 @@
                     {{-- Alamat Input --}}
                     <div class="col-12">
                         <label for="alamat" class="form-label">Alamat</label>
-                        <input name="alamat" value="{{ old('alamat') }}" type="alamat"
+                        <input name="alamat" value="{{ old('alamat', $petugas->alamat ?? '') }}" type="alamat"
                             class="form-control @error('alamat') is-invalid @enderror" id="alamat"
                             placeholder="Masukkan Alamat Petugas">
                         @error('alamat')
@@ -52,7 +52,7 @@
                     {{-- Telephone Input --}}
                     <div class="col-12">
                         <label for="telp" class="form-label">No Telephone</label>
-                        <input name="telp" value="{{ old('telp') }}" type="text"
+                        <input name="telp" value="{{ old('telp', $petugas->telp ?? '') }}" type="text"
                             class="form-control @error('telp') is-invalid @enderror" id="telp"
                             placeholder="Masukkan No Telephone Petugas">
                         @error('telp')
@@ -68,7 +68,7 @@
                         <select name="id_akun" class="form-select @error('id_akun') is-invalid @enderror" id="id_akun">
                             <option value="">Pilih Akun</option>
                             @foreach ($list_akun as $item)
-                                <option value="{{ $item->id_akun }}" @if (old('id_akun', $akun->id_akun ?? '') == $item->id_akun) selected @endif>
+                                <option value="{{ $item->id_akun }}" @if (old('id_akun', $petugas->id_akun ?? '') == $item->id_akun) selected @endif>
                                     {{ $item->username }}</option>
                             @endforeach
                         </select>
@@ -82,7 +82,7 @@
                     {{-- Tombol Simpan dan Batal --}}
                     <div class="d-flex gap-2">
                         <button type="submit" class="btn btn-primary">Simpan</button>
-                        <button type="reset" class="btn btn-secondary">Batal</button>
+                        <a href="{{ url('admin/petugas') }}" class="btn btn-secondary">Batal</a>
                     </div>
                 </form>
                 <!-- End Form -->
