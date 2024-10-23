@@ -20,4 +20,9 @@ class AkunModel extends Model
     {
         return $this->hasOne(PetugasModel::class, 'id_akun', 'id_akun');
     }
+
+    public function peserta()
+    {
+        return $this->hasOne(PesertaModel::class, 'id_akun', 'id_akun');
+    }
 }

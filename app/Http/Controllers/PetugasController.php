@@ -24,7 +24,7 @@ class PetugasController extends Controller
         }
 
         // Menampilkan halaman petugas dan passing data petugas
-        return view('admin/petugas', [
+        return view('admin/petugas/petugas_data', [
             'list_petugas' => $list_petugas
         ]);
     }
@@ -39,7 +39,7 @@ class PetugasController extends Controller
             ->whereDoesntHave('petugas')
             ->get();
 
-        return view('admin/petugas_form', [
+        return view('admin/petugas/petugas_form', [
             'form' => 'Tambah',
             'url' => url('admin/petugas/store'),
             'list_akun' => $list_akun,
@@ -75,7 +75,7 @@ class PetugasController extends Controller
             ->orWhere('id_akun', $petugas->id_akun)
             ->get();
 
-        return view('admin/petugas_form', [
+        return view('admin/petugas/petugas_form', [
             'form' => 'Edit',
             'url' => url('admin/petugas/update/' . $id),
             'petugas' => $petugas,

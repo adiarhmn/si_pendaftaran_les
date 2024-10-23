@@ -138,8 +138,14 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link  {{ Request::is('admin/petugas*') ? 'active' : 'collapsed' }}" href="{{ url('admin/petugas') }}">
-                    <i class="bi bi-file-earmark-person-fill"></i>
+                    <i class="bi bi-person-check"></i>
                     <span>Petugas</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link  {{ Request::is('admin/peserta*') ? 'active' : 'collapsed' }}" href="{{ url('admin/peserta') }}">
+                    <i class="bi bi-person-badge"></i>
+                    <span>Peserta</span>
                 </a>
             </li>
         </ul>

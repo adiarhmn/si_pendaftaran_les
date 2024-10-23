@@ -22,7 +22,7 @@ class AkunController extends Controller
         }
 
         // Menampilkan halaman akun dan passing data akun
-        return view('admin/akun', [
+        return view('admin/akun/akun_data', [
             'list_akun' => $list_akun
         ]);
     }
@@ -31,7 +31,7 @@ class AkunController extends Controller
     // @METHOD create() akan menampilkan form create akun
     public function create()
     {
-        return view('admin/akun_form', [
+        return view('admin/akun/akun_form', [
             'form' => 'Tambah',
             'url' => url('admin/akun/store'),
         ]);
@@ -59,7 +59,7 @@ class AkunController extends Controller
         $akun = AkunModel::find($id);
 
         // Menampilkan form edit akun dan passing data akun
-        return view('admin/akun_form', [
+        return view('admin/akun/akun_form', [
             'form' => 'Edit',
             'url' => url('admin/akun/update/' . $id),
             'akun' => $akun,
