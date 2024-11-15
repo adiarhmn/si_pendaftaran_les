@@ -22,10 +22,28 @@ return new class extends Migration
             $table->integer('harga');
 
             // Membuat kolom deskripsi
-            $table->text('deskripsi');
+            $table->text('deskripsi')->nullable();
+
+            // Membuat kolom durasi
+            $table->integer('durasi')->default(0);
+
+            // Membuat kolom tanggal_mulai
+            $table->date('tanggal_mulai');
+
+            // Membuat kolom tanggal_selesai
+            $table->date('tanggal_selesai');
+
+            // Membuat kolom jumlah_peserta
+            $table->integer('jumlah_peserta')->default(0);
+
+            // Membuat kolom Jumlah Pertemuan
+            $table->integer('jumlah_pertemuan')->default(0);
+
+            // Status kursus
+            $table->enum('status_kursus', ['open', 'close'])->default('open');
 
             // Membuat kolom gambar_cover
-            $table->string('gambar_cover', 100);
+            $table->string('gambar_cover', 100)->nullable();
 
             // Membuat Foreign Key dari id_petugas
             $table->unsignedBigInteger('id_petugas');

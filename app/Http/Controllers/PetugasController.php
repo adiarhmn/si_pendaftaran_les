@@ -50,12 +50,21 @@ class PetugasController extends Controller
     // @METHOD store() akan menyimpan data petugas ke database
     public function store(PetugasRequest $request)
     {
+
+        // Create Akun
+        $akun = new AkunModel();
+        $akun->username = $request->username;
+        $akun->level = 'petugas';
+        $akun->password = password_hash($request->password, PASSWORD_DEFAULT);
+        $akun->save();
+
+
         // Menyimpan data petugas ke database
         $petugas = new PetugasModel();
         $petugas->nama_petugas = $request->nama_petugas;
         $petugas->telp = $request->telp;
         $petugas->alamat = $request->alamat;
-        $petugas->id_akun = $request->id_akun;
+        $petugas->id_akun = $akun->id_akun;
         $petugas->save();
 
         // Redirect ke halaman petugas dengan pesan sukses
@@ -87,14 +96,20 @@ class PetugasController extends Controller
     // @METHOD update() akan mengupdate data petugas ke database
     public function update(PetugasRequest $request, $id)
     {
+
         // Mengambil data petugas berdasarkan id
         $petugas = PetugasModel::find($id);
+
+        // Update Akun
+        $akun = AkunModel::find($petugas->id_akun);
+        $akun->username = $request->username;
+        if ($request->filled('password')) $akun->password = password_hash($request->password, PASSWORD_DEFAULT);
+        $akun->save();
 
         // Mengupdate data petugas ke database
         $petugas->nama_petugas = $request->nama_petugas;
         $petugas->telp = $request->telp;
         $petugas->alamat = $request->alamat;
-        $petugas->id_akun = $request->id_akun;
         $petugas->save();
 
         // Redirect ke halaman petugas dengan pesan sukses

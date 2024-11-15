@@ -137,15 +137,24 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link  {{ Request::is('admin/petugas*') ? 'active' : 'collapsed' }}" href="{{ url('admin/petugas') }}">
+                <a class="nav-link  {{ Request::is('admin/petugas*') ? 'active' : 'collapsed' }}"
+                    href="{{ url('admin/petugas') }}">
                     <i class="bi bi-person-check"></i>
                     <span>Petugas</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link  {{ Request::is('admin/peserta*') ? 'active' : 'collapsed' }}" href="{{ url('admin/peserta') }}">
+                <a class="nav-link  {{ Request::is('admin/peserta*') ? 'active' : 'collapsed' }}"
+                    href="{{ url('admin/peserta') }}">
                     <i class="bi bi-person-badge"></i>
                     <span>Peserta</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link  {{ Request::is('admin/kursus*') ? 'active' : 'collapsed' }}"
+                    href="{{ url('admin/kursus') }}">
+                    <i class="bi bi-journal-bookmark-fill"></i>
+                    <span>Kursus</span>
                 </a>
             </li>
         </ul>

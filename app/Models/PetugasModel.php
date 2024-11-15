@@ -21,4 +21,9 @@ class PetugasModel extends Model
     {
         return $this->belongsTo(AkunModel::class, 'id_akun', 'id_akun');
     }
+
+    public function kursus()
+    {
+        return $this->hasMany(KursusModel::class, 'id_petugas', 'id_petugas');
+    }
 }

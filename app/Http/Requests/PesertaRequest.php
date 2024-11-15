@@ -23,6 +23,7 @@ class PesertaRequest extends FormRequest
     {
         $id = $this->route('id') ?? '';
         return [
+            
             'nama_peserta' => [
                 'required',
                 'max:50',

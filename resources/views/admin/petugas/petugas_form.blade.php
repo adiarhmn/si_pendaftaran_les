@@ -17,18 +17,43 @@
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Form {{ $form }} Petugas</h5>
-
                 <!-- Start Form -->
                 <form action="{{ $url }}" class="row g-3 @if ($errors->any()) validated @endif"
                     method="POST">
                     @csrf
 
+                    {{-- Username --}}
+                    <div class="col-12">
+                        <label for="username" class="form-label">Username</label>
+                        <input name="username" value="{{ old('username', $petugas->akun->username ?? '') }}" type="text"
+                            class="form-control @error('username') is-invalid @enderror" id="username"
+                            placeholder="Masukkan Username">
+                        @error('username')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                    {{-- Password --}}
+                    <div class="col-12">
+                        <label for="password" class="form-label">Password</label>
+                        <input name="password" value="{{ old('password') }}" type="password"
+                            class="form-control @error('password') is-invalid @enderror" id="password"
+                            placeholder="***********">
+                        @error('password')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
                     {{-- Nama Lengkap Input --}}
                     <div class="col-12">
                         <label for="nama_petugas" class="form-label">Nama Lengkap</label>
-                        <input name="nama_petugas" value="{{ old('nama_petugas', $petugas->nama_petugas ?? '') }}" type="text"
-                            class="form-control @error('nama_petugas') is-invalid @enderror" id="nama_petugas"
-                            placeholder="Masukkan Nama Lengkap Petugas">
+                        <input name="nama_petugas" value="{{ old('nama_petugas', $petugas->nama_petugas ?? '') }}"
+                            type="text" class="form-control @error('nama_petugas') is-invalid @enderror"
+                            id="nama_petugas" placeholder="Masukkan Nama Lengkap Petugas">
                         @error('nama_petugas')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -62,22 +87,8 @@
                         @enderror
                     </div>
 
-                    {{-- Akun Selection --}}
-                    <div class="col-12">
-                        <label for="id_akun" class="form-label">Akun</label>
-                        <select name="id_akun" class="form-select @error('id_akun') is-invalid @enderror" id="id_akun">
-                            <option value="">Pilih Akun</option>
-                            @foreach ($list_akun as $item)
-                                <option value="{{ $item->id_akun }}" @if (old('id_akun', $petugas->id_akun ?? '') == $item->id_akun) selected @endif>
-                                    {{ $item->username }}</option>
-                            @endforeach
-                        </select>
-                        @error('id_akun')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
+                    {{-- id_akun Hidden --}}
+                    <input type="hidden" name="id_akun" value="{{ $petugas->id_akun ?? '' }}">
 
                     {{-- Tombol Simpan dan Batal --}}
                     <div class="d-flex gap-2">

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AkunController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\KursusController;
 use App\Http\Controllers\PesertaController;
 use App\Http\Controllers\PetugasController;
 use Illuminate\Support\Facades\Route;
@@ -40,5 +41,15 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/edit/{id}', [PesertaController::class, 'edit']);
         Route::post('/update/{id}', [PesertaController::class, 'update']);
         Route::delete('/delete/{id}', [PesertaController::class, 'delete']);
+    });
+
+    // Kelola Kursus (CRUD)
+    Route::group(['prefix' => 'kursus'], function () {
+        Route::get('/', [KursusController::class, 'index']);
+        Route::get('/create', [KursusController::class, 'create']);
+        Route::post('/store', [KursusController::class, 'store']);
+        Route::get('/edit/{id}', [KursusController::class, 'edit']);
+        Route::post('/update/{id}', [KursusController::class, 'update']);
+        Route::delete('/delete/{id}', [KursusController::class, 'delete']);
     });
 });

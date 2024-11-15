@@ -23,6 +23,16 @@ class PetugasRequest extends FormRequest
     {
         $id = $this->route('id') ?? '';
         return [
+            'username' => [
+                'required',
+                'alpha_num',
+                'max:25',
+                'unique:akun,username,' . $id . ',id_akun',
+            ],
+            'password' => [
+                $id ? 'nullable' : 'required',
+                'min:8',
+            ],
             'nama_petugas' => [
                 'required',
                 'max:50',
@@ -36,11 +46,6 @@ class PetugasRequest extends FormRequest
             'alamat' => [
                 'required',
                 'max:100',
-            ],
-            'id_akun' => [
-                'required',
-                'exists:akun,id_akun',
-                'unique:petugas,id_akun,' . $id . ',id_petugas',
             ],
         ];
     }
