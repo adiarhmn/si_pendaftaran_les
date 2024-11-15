@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AkunController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KursusController;
 use App\Http\Controllers\PesertaController;
 use App\Http\Controllers\PetugasController;
@@ -10,6 +11,15 @@ use Illuminate\Support\Facades\Route;
 
 
 
+
+// USER ROUTES
+Route::group(['prefix' => ''], function () {
+    Route::get('/', [HomeController::class, 'index']);                      // Menampilkan halaman home
+    Route::get('/kursus', [HomeController::class, 'kursus']);
+});
+
+
+// ADMIN ROUTES
 Route::group(['prefix' => 'admin'], function () {
     Route::get('/', [DashboardController::class, 'indexAdmin']);            // Menampilkan halaman dashboard
 
