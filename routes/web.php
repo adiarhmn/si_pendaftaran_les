@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AkunController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KursusController;
@@ -11,6 +12,12 @@ use Illuminate\Support\Facades\Route;
 
 
 
+// AUTH ROUTES
+Route::get('/login', function () {
+    return view('auth.login');
+})->name('login');
+Route::post('/auth', [AuthController::class, 'auth'])->name('login.auth');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // USER ROUTES
 Route::group(['prefix' => ''], function () {

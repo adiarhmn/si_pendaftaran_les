@@ -44,13 +44,13 @@
             <nav id="navmenu" class="navmenu">
                 <ul>
                     <li><a href="#hero" class="active">Home<br></a></li>
-                    <li><a href="#services">Kursus</a></li>
+                    <li><a href="#courses">Kursus</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
             </nav>
 
-            <a class="btn-getstarted flex-md-shrink-0" href="index.html#about">Get Started</a>
+            <a class="btn-getstarted flex-md-shrink-0" href={{ route('login') }}>Login</a>
 
         </div>
     </header>
