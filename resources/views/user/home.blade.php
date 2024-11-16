@@ -49,16 +49,16 @@
                 </ul>
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
             </nav>
-
-            <a class="btn-getstarted flex-md-shrink-0" href={{ route('login') }}>Login</a>
-
+            @if (Auth::check())
+                <a class="btn-getstarted flex-md-shrink-0" href={{ route('logout') }}>Logout</a>
+            @else
+                <a class="btn-getstarted flex-md-shrink-0" href={{ route('login') }}>Login</a>
+            @endif
         </div>
     </header>
 
     <main class="main">
-
         <section id="hero" class="hero section">
-
             <div class="container">
                 <div class="row gy-4">
                     <div class="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center">

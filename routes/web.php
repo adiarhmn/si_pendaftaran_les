@@ -19,15 +19,18 @@ Route::get('/login', function () {
 Route::post('/auth', [AuthController::class, 'auth'])->name('login.auth');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// USER ROUTES
+// PUBLIC ROUTES
 Route::group(['prefix' => ''], function () {
     Route::get('/', [HomeController::class, 'index']);                      // Menampilkan halaman home
     Route::get('/kursus', [HomeController::class, 'kursus']);
 });
 
+// USER ROUTES
+Route::group(['prefix' => ''], function () {
+});
 
 // ADMIN ROUTES
-Route::group(['prefix' => 'admin'], function () {
+Route::group(['prefix' => 'admin', 'middleware' => 'checkRole:admin'], function () {
     Route::get('/', [DashboardController::class, 'indexAdmin']);            // Menampilkan halaman dashboard
 
     // Kelola Akun (CRUD)
