@@ -15,4 +15,7 @@
     <section class="section">
 
     </section>
+
+    {{-- NOTIFIKASI SWEETALERT --}}
+    @include('components.notifications')
 @endsection

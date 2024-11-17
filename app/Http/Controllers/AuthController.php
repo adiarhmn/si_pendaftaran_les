@@ -22,7 +22,7 @@ class AuthController extends Controller
             $request->session()->regenerate();
 
             if (Auth::user()->level == 'admin') {
-                return redirect()->intended('/admin');
+                return redirect()->intended('/admin')->with('success', 'Berhasil login');
             } else {
                 return redirect()->intended('/');
             }
