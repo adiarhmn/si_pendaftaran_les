@@ -34,6 +34,7 @@
                     <thead>
                         <tr>
                             <th scope="col">No</th>
+                            <th scope="col">Cover</th>
                             <th scope="col">Nama Kursus</th>
                             <th scope="col">Harga</th>
                             <th scope="col">Deskripsi</th>
@@ -48,8 +49,12 @@
                         @foreach ($list_kursus as $index => $item)
                             <tr>
                                 <th scope="row">{{ $index + 1 + (($_GET['page'] ?? 1) - 1) * 5 }}</th>
+                                <td>
+                                    <img src="{{ url('images/' . $item->gambar_cover) }}" alt="{{ $item->nama_kursus }}"
+                                        style="width: 50px;">
+                                </td>
                                 <td>{{ $item->nama_kursus }}</td>
-                                <td>{{ $item->harga }}</td>
+                                <td>{{ rupiah($item->harga) }}</td>
                                 <td>{{ $item->deskripsi }}</td>
                                 <td>{{ $item->durasi }}</td>
                                 <td>{{ $item->tanggal_mulai }} - {{ $item->tanggal_selesai }}</td>
