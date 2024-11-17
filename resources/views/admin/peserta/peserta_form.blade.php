@@ -23,12 +23,38 @@
                     method="POST">
                     @csrf
 
+                    {{-- Username --}}
+                    <div class="col-12">
+                        <label for="username" class="form-label">Username</label>
+                        <input name="username" value="{{ old('username', $peserta->akun->username ?? '') }}" type="text"
+                            class="form-control @error('username') is-invalid @enderror" id="username"
+                            placeholder="Masukkan Username">
+                        @error('username')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                    {{-- Password --}}
+                    <div class="col-12">
+                        <label for="password" class="form-label">Password</label>
+                        <input name="password" value="{{ old('password') }}" type="password"
+                            class="form-control @error('password') is-invalid @enderror" id="password"
+                            placeholder="***********">
+                        @error('password')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
                     {{-- Nama Lengkap Input --}}
                     <div class="col-12">
                         <label for="nama_peserta" class="form-label">Nama Lengkap</label>
-                        <input name="nama_peserta" value="{{ old('nama_peserta', $peserta->nama_peserta ?? '') }}" type="text"
-                            class="form-control @error('nama_peserta') is-invalid @enderror" id="nama_peserta"
-                            placeholder="Masukkan Nama Lengkap Peserta">
+                        <input name="nama_peserta" value="{{ old('nama_peserta', $peserta->nama_peserta ?? '') }}"
+                            type="text" class="form-control @error('nama_peserta') is-invalid @enderror"
+                            id="nama_peserta" placeholder="Masukkan Nama Lengkap Peserta">
                         @error('nama_peserta')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -56,23 +82,6 @@
                             class="form-control @error('telp') is-invalid @enderror" id="telp"
                             placeholder="Masukkan No Telephone Peserta">
                         @error('telp')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-
-                    {{-- Akun Selection --}}
-                    <div class="col-12">
-                        <label for="id_akun" class="form-label">Akun</label>
-                        <select name="id_akun" class="form-select @error('id_akun') is-invalid @enderror" id="id_akun">
-                            <option value="">Pilih Akun</option>
-                            @foreach ($list_akun as $item)
-                                <option value="{{ $item->id_akun }}" @if (old('id_akun', $peserta->id_akun ?? '') == $item->id_akun) selected @endif>
-                                    {{ $item->username }}</option>
-                            @endforeach
-                        </select>
-                        @error('id_akun')
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>

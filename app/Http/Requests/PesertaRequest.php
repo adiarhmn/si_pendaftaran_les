@@ -23,7 +23,16 @@ class PesertaRequest extends FormRequest
     {
         $id = $this->route('id') ?? '';
         return [
-            
+            'username' => [
+                'required',
+                'alpha_num',
+                'max:50',
+                'unique:akun,username,' . $id . ',id_akun',
+            ],
+            'password' => [
+                $id ? 'nullable' : 'required',
+                'min:8',
+            ],
             'nama_peserta' => [
                 'required',
                 'max:50',
@@ -39,11 +48,7 @@ class PesertaRequest extends FormRequest
                 'required',
                 'max:100',
             ],
-            'id_akun' => [
-                'required',
-                'exists:akun,id_akun',
-                'unique:peserta,id_akun,' . $id . ',id_peserta',
-            ],
+            
         ];
     }
 }

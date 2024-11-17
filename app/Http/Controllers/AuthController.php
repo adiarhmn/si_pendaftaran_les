@@ -9,7 +9,6 @@ class AuthController extends Controller
 {
     public function auth(Request $request)
     {
-
         // Validate the form data
         $request->validate([
             'username' => 'required|alpha_num',
@@ -20,16 +19,13 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-
             if (Auth::user()->level == 'admin') {
                 return redirect()->intended('/admin')->with('success', 'Berhasil login');
             } else {
                 return redirect()->intended('/');
             }
-
             return redirect()->intended('/');
         }
-
         return back()->with('error', 'Username atau password salah');
     }
 

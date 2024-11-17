@@ -50,12 +50,19 @@ class PesertaController extends Controller
     // @METHOD store() akan menyimpan data peserta ke database
     public function store(PesertaRequest $request)
     {
+        // Create Akun
+        $akun = new AkunModel();
+        $akun->username = $request->username;
+        $akun->level = 'petugas';
+        $akun->password = password_hash($request->password, PASSWORD_DEFAULT);
+        $akun->save();
+
         // Menyimpan data peserta ke database
         $peserta = new PesertaModel();
         $peserta->nama_peserta = $request->nama_peserta;
         $peserta->telp = $request->telp;
         $peserta->alamat = $request->alamat;
-        $peserta->id_akun = $request->id_akun;
+        $peserta->id_akun = $akun->id_akun;
         $peserta->save();
 
         return redirect('/admin/peserta')->with('success', 'Data peserta berhasil disimpan');
@@ -87,14 +94,22 @@ class PesertaController extends Controller
     // @METHOD update() akan mengupdate data peserta ke database
     public function update(PesertaRequest $request, $id)
     {
+
         // Mengambil data peserta berdasarkan id
         $peserta = PesertaModel::find($id);
+
+
+        // Memperbarui jika password tidak kosong
+        if ($request->filled('passsword')) {
+            $akun = AkunModel::find($peserta->id_akun);
+            $akun->password = password_hash($request->password, PASSWORD_DEFAULT);
+            $akun->save();
+        }
 
         // Mengupdate data peserta ke database
         $peserta->nama_peserta = $request->nama_peserta;
         $peserta->telp = $request->telp;
         $peserta->alamat = $request->alamat;
-        $peserta->id_akun = $request->id_akun;
         $peserta->save();
 
         return redirect('/admin/peserta')->with('success', 'Data peserta berhasil diupdate');
