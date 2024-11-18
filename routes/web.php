@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 
 
 
-// AUTH ROUTES
+// ===================================== AUTH ROUTES =====================================
 Route::get('login', function () {
     return view('auth.login');
 })->name('login');
@@ -23,19 +23,20 @@ Route::get('register', function () {
 })->name('auth.register');
 Route::post('register', [AuthController::class, 'register'])->name('auth.register');
 
-// PUBLIC ROUTES
+// ===================================== PUBLIC ROUTES ===================================== 
 Route::group(['prefix' => ''], function () {
     Route::get('/', [HomeController::class, 'index']);                      // Menampilkan halaman home
 });
 
-// USER ROUTES
+// ===================================== PESERTA ROUTES ===================================== 
 Route::group(['prefix' => 'peserta', 'middleware' => 'checkRole:peserta'], function () {
     Route::get('dashboard', [DashboardController::class, 'indexPeserta']);  // Menampilkan halaman dashboard
+    Route::get('kursus', [PesertaController::class, 'kursusSaya'])->name('peserta.kursus.detail');
     Route::get('kursus/{id}', [KursusController::class, 'detail'])->name('peserta.kursus.detail');
     Route::get('register', [PesertaController::class, 'pesertaRegister'])->name('peserta.register');
 });
 
-// ADMIN ROUTES
+// ===================================== ADMIN ROUTES ===================================== 
 Route::group(['prefix' => 'admin', 'middleware' => 'checkRole:admin'], function () {
     Route::get('dashboard', [DashboardController::class, 'indexAdmin']);            // Menampilkan halaman dashboard
 

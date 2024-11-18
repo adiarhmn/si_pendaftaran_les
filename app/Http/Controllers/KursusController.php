@@ -29,7 +29,6 @@ class KursusController extends Controller
         ]);
     }
 
-
     // ====================================================================================
     // @METHOD create() akan menampilkan form create kursus
     public function create()

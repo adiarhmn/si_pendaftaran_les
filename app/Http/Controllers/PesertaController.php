@@ -6,6 +6,7 @@ use App\Http\Requests\PesertaRequest;
 use App\Models\AkunModel;
 use App\Models\PesertaModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PesertaController extends Controller
 {
@@ -127,6 +128,11 @@ class PesertaController extends Controller
 
 
     public function indexPeserta() {}
+
+    public function kursusSaya()
+    {
+    //    $list_kursus = 
+    }
 
     public function registerCourse(Request $request) {}
 }

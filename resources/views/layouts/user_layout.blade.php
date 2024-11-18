@@ -50,7 +50,8 @@
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
             </nav>
             @if (Auth::check())
-                <a class="btn-getstarted flex-md-shrink-0" href={{ route('logout') }}>Logout</a>
+                <a class="btn-getstarted flex-md-shrink-0"
+                    href={{ url(Auth::user()->level . '/dashboard') }}>Dashboard</a>
             @else
                 <a class="btn-getstarted flex-md-shrink-0" href={{ route('login') }}>Login</a>
             @endif

@@ -42,7 +42,7 @@
     <header id="header" class="header fixed-top d-flex align-items-center">
 
         <div class="d-flex align-items-center justify-content-between">
-            <a href="index.html" class="logo d-flex align-items-center">
+            <a href="{{ url('/') }}" class="logo d-flex align-items-center">
                 <img src="{{ url('assets/img/logo.png') }}" alt="">
                 <span class="d-none d-lg-block">Batuah</span>
             </a>
@@ -93,27 +93,33 @@
     <aside id="sidebar" class="sidebar">
         <ul class="sidebar-nav" id="sidebar-nav">
             <li class="nav-item">
-                <a class="nav-link {{ Request::is('admin') ? 'active' : 'collapsed' }}" href="{{ url('admin') }}">
+                <a class="nav-link {{ Request::is('peserta/dashboard') ? 'active' : 'collapsed' }}"
+                    href="{{ url('peserta/dashboard') }}">
                     <i class="bi bi-grid"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ Request::is('admin/akun*') ? 'active' : 'collapsed' }}"
-                    href="{{ url('admin/akun') }}">
-                    <i class="bi bi-people-fill"></i>
+                <a class="nav-link {{ Request::is('peserta/akun*') ? 'active' : 'collapsed' }}"
+                    href="{{ url('peserta/akun') }}">
+                    <i class="bi bi-person-square"></i>
                     <span>Profile</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link  {{ Request::is('admin/kursus*') ? 'active' : 'collapsed' }}"
-                    href="{{ url('admin/kursus') }}">
+                <a class="nav-link collapsed" href="{{ url('/#courses') }}">
+                    <i class="bi bi-search"></i>
+                    <span>Cari Kursus</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link  {{ Request::is('peserta/kursus*') ? 'active' : 'collapsed' }}"
+                    href="{{ url('peserta/kursus') }}">
                     <i class="bi bi-journal-bookmark-fill"></i>
                     <span>Kursus Saya</span>
                 </a>
             </li>
         </ul>
-
     </aside><!-- End Sidebar-->
 
     {{-- Awal Content --}}

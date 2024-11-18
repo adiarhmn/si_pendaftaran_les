@@ -1,7 +1,4 @@
-<!-- Helpers Custom -->
 <?php
-
-
 // Rupiah Format
 function rupiah($angka)
 {
