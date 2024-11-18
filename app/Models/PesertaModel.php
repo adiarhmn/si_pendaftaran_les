@@ -21,4 +21,9 @@ class PesertaModel extends Model
     {
         return $this->belongsTo(AkunModel::class, 'id_akun', 'id_akun');
     }
+
+    public function peserta_kursus()
+    {
+        return $this->hasMany(PesertaKursusModel::class, 'id_peserta', 'id_peserta');
+    }
 }

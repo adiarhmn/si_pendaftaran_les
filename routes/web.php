@@ -9,7 +9,8 @@ use App\Http\Controllers\PesertaController;
 use App\Http\Controllers\PetugasController;
 use Illuminate\Support\Facades\Route;
 
-
+// PARAMETER DEFENITION
+Route::pattern('id', '[0-9]+');
 
 
 // ===================================== AUTH ROUTES =====================================
@@ -70,7 +71,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkRole:admin'], function 
         Route::delete('/delete/{id}', [PesertaController::class, 'delete']);
     });
 
-    // Kelola Kursus (CRUD)
+    // Kelola Kursus (CRUD - DLL)
     Route::group(['prefix' => 'kursus'], function () {
         Route::get('/', [KursusController::class, 'index']);
         Route::get('/create', [KursusController::class, 'create']);
@@ -78,5 +79,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkRole:admin'], function 
         Route::get('/edit/{id}', [KursusController::class, 'edit']);
         Route::post('/update/{id}', [KursusController::class, 'update']);
         Route::delete('/delete/{id}', [KursusController::class, 'delete']);
+
+        Route::get('/peserta/{id}', [KursusController::class, 'pesertaKursus'])->name('admin.kursus.peserta');
+        Route::post('/peserta/store', [KursusController::class, 'tambahPesertaKursus'])->name('admin.kursus.peserta.store');
     });
 });

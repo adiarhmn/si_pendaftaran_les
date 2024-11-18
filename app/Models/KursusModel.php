@@ -27,4 +27,9 @@ class KursusModel extends Model
     {
         return $this->belongsTo(PetugasModel::class, 'id_petugas', 'id_petugas');
     }
+
+    public function peserta_kursus()
+    {
+        return $this->hasMany(PesertaKursusModel::class, 'id_kursus', 'id_kursus');
+    }
 }

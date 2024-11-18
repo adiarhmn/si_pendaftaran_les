@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\KursusRequest;
 use App\Models\KursusModel;
+use App\Models\PesertaKursusModel;
+use App\Models\PesertaModel;
 use App\Models\PetugasModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -118,5 +120,40 @@ class KursusController extends Controller
         return view(Auth::user()->level . '/kursus/kursus_detail', [
             'kursus' => $kursus
         ]);
+    }
+
+    public function pesertaKursus(int $id)
+    {
+        $kursus = KursusModel::find($id);
+        $list_peserta = $kursus->peserta_kursus;
+
+        $list_peserta_free = PesertaModel::whereDoesntHave('peserta_kursus', function ($query) use ($id) {
+            $query->where('id_kursus', $id);
+        })->get();
+
+
+        return view('admin/kursus/kursus_peserta', [
+            'kursus' => $kursus,
+            'list_peserta' => $list_peserta,
+            'list_peserta_free' => $list_peserta_free,
+        ]);
+    }
+
+    public function tambahPesertaKursus(Request $request)
+    {
+        // Validasi Request
+        $request->validate([
+            'id_kursus' => 'required',
+            'id_peserta' => 'required',
+        ]);
+
+        // Create Peserta Kursus
+        $peserta_kursus = new PesertaKursusModel();
+        $peserta_kursus->id_kursus = $request->id_kursus;
+        $peserta_kursus->id_peserta = $request->id_peserta;
+        $peserta_kursus->status_peserta_kursus = 'pending';
+        $peserta_kursus->save();
+
+        return redirect('/admin/kursus/peserta/' . $request->id_kursus)->with('success', 'Peserta berhasil ditambahkan ke kursus');
     }
 }

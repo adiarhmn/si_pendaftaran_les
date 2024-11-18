@@ -75,6 +75,10 @@
                                     </button>
                                     <ul class="dropdown-menu">
                                         <li>
+                                            <a href="{{ url('admin/kursus/peserta/' . $item->id_kursus) }}"
+                                                class="dropdown-item">Peserta Kursus</a>
+                                        </li>
+                                        <li>
                                             <a href="{{ url('admin/kursus/edit/' . $item->id_kursus) }}"
                                                 class="dropdown-item">Edit</a>
                                         </li>
