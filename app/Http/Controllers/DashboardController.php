@@ -21,5 +21,11 @@ class DashboardController extends Controller
     public function indexPetugas()
     {
         return view('petugas/dashboard');
-    } 
+    }
+
+    // @METHOD indexPeserta() ini akan menampilkan halaman dashboard peserta
+    public function indexPeserta()
+    {
+        return view('peserta/dashboard');
+    }
 }

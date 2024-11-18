@@ -53,7 +53,7 @@
                                         </div>
                                         <div class="col-12">
                                             <p class="small mb-0">Belum punya akun? <a
-                                                    href={{ url('/register') }}>Daftar</a></p>
+                                                    href={{ route('auth.register') }}>Daftar</a></p>
                                         </div>
                                     </form>
                                 </div>

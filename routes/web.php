@@ -13,25 +13,31 @@ use Illuminate\Support\Facades\Route;
 
 
 // AUTH ROUTES
-Route::get('/login', function () {
+Route::get('login', function () {
     return view('auth.login');
 })->name('login');
-Route::post('/auth', [AuthController::class, 'auth'])->name('login.auth');
-Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::post('auth', [AuthController::class, 'auth'])->name('login.auth');
+Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('register', function () {
+    return view('auth.register');
+})->name('auth.register');
+Route::post('register', [AuthController::class, 'register'])->name('auth.register');
 
 // PUBLIC ROUTES
 Route::group(['prefix' => ''], function () {
     Route::get('/', [HomeController::class, 'index']);                      // Menampilkan halaman home
-    Route::get('/kursus', [HomeController::class, 'kursus']);
 });
 
 // USER ROUTES
-Route::group(['prefix' => ''], function () {
+Route::group(['prefix' => 'peserta', 'middleware' => 'checkRole:peserta'], function () {
+    Route::get('dashboard', [DashboardController::class, 'indexPeserta']);  // Menampilkan halaman dashboard
+    Route::get('kursus/{id}', [KursusController::class, 'detail'])->name('peserta.kursus.detail');
+    Route::get('register', [PesertaController::class, 'pesertaRegister'])->name('peserta.register');
 });
 
 // ADMIN ROUTES
 Route::group(['prefix' => 'admin', 'middleware' => 'checkRole:admin'], function () {
-    Route::get('/', [DashboardController::class, 'indexAdmin']);            // Menampilkan halaman dashboard
+    Route::get('dashboard', [DashboardController::class, 'indexAdmin']);            // Menampilkan halaman dashboard
 
     // Kelola Akun (CRUD)
     Route::group(['prefix' => 'akun'], function () {

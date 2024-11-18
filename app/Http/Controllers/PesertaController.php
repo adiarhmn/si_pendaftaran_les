@@ -124,4 +124,9 @@ class PesertaController extends Controller
 
         return redirect('/admin/peserta')->with('success', 'Data peserta berhasil dihapus');
     }
+
+
+    public function indexPeserta() {}
+
+    public function registerCourse(Request $request) {}
 }

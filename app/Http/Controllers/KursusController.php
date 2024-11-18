@@ -6,6 +6,7 @@ use App\Http\Requests\KursusRequest;
 use App\Models\KursusModel;
 use App\Models\PetugasModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class KursusController extends Controller
 {
@@ -106,5 +107,17 @@ class KursusController extends Controller
         KursusModel::destroy($id);
 
         return redirect('/admin/kursus')->with('success', 'Data kursus berhasil dihapus');
+    }
+
+    // ====================================================================================
+    // @METHOD detail() akan menampilkan detail kursus
+    public function detail($id)
+    {
+        // Mengambil data kursus berdasarkan id
+        $kursus = KursusModel::find($id);
+
+        return view(Auth::user()->level . '/kursus/kursus_detail', [
+            'kursus' => $kursus
+        ]);
     }
 }
