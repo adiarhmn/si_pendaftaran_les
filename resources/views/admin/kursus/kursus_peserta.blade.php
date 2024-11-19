@@ -127,6 +127,7 @@
                             <th scope="col">No Telephone</th>
                             <th scope="col">Alamat</th>
                             <th scope="col">Status Kursus</th>
+                            <th scope="col">Status Pembayaran</th>
                             <th scope="col">Aksi</th>
                         </tr>
                     </thead>
@@ -141,6 +142,12 @@
                                     <span style="text-transform: uppercase;"
                                         class="badge rounded-pill @if ($item->status_peserta == 'approved') bg-primary @else bg-danger @endif">
                                         {{ $item->status_peserta_kursus }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span style="text-transform: uppercase;"
+                                        class="badge rounded-pill @if ($item->status_pembayaran == 'approved') bg-primary @else bg-danger @endif">
+                                        {{ $item->status_pembayaran }}
                                     </span>
                                 </td>
                                 <td>

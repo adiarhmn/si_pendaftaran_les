@@ -16,7 +16,10 @@ return new class extends Migration
             $table->id('id_peserta_kursus');
 
             // Membuat kolom status_peserta_kursus
-            $table->enum('status_peserta_kursus', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->enum('status_peserta_kursus', ['pending', 'diterima', 'ditolak'])->default('pending');
+
+            // Membuat kolom status_pelatihan
+            $table->enum('status_pelatihan', ['belum dimulai', 'berlangsung', 'selesai'])->default('belum dimulai');
 
             // Membuat Foreign Key dari id_peserta table peserta
             $table->unsignedBigInteger('id_peserta');
@@ -33,6 +36,21 @@ return new class extends Migration
                 ->on('kursus')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
+
+            // Membuat Status Pembayaran
+            $table->enum('status_pembayaran', ['lunas', 'belum lunas'])->default('belum lunas');
+
+            // Membuat Total Tagihan
+            $table->string('total_tagihan')->default(0);
+
+            // Membuat Total Pembayaran
+            $table->string('total_pembayaran')->default(0);
+
+            // Membuat kolom tanggal_tenggat_pembayaran
+            $table->date('tgl_tenggat_pembayaran')->nullable();
+
+            // Membuat Sertifikat
+            $table->string('status_sertifikat')->default('belum terbit');
 
             // Membuat created_at dan updated_at
             $table->timestamps();

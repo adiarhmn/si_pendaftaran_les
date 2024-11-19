@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('nama_petugas', 100);
 
             //Membuat kolom alamat
-            $table->string('telp', 13);
+            $table->string('telp', 25);
 
             //Membuat kolom alamat
             $table->text('alamat');

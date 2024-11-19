@@ -40,7 +40,6 @@
                             <th scope="col">Deskripsi</th>
                             <th scope="col">Durasi</th>
                             <th scope="col">Tanggal</th>
-                            <th scope="col">Jumlah Peserta</th>
                             <th scope="col">Status Kursus</th>
                             <th scope="col">Aksi</th>
                         </tr>
@@ -58,7 +57,6 @@
                                 <td>{{ $item->deskripsi }}</td>
                                 <td>{{ $item->durasi }}</td>
                                 <td>{{ $item->tanggal_mulai }} - {{ $item->tanggal_selesai }}</td>
-                                <td>{{ $item->jumlah_peserta }}</td>
                                 <td>
                                     <span
                                         class="badge rounded-pill 
