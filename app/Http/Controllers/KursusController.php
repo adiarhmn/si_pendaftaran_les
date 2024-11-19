@@ -147,11 +147,18 @@ class KursusController extends Controller
             'id_peserta' => 'required',
         ]);
 
+        $Kursus = KursusModel::find($request->id_kursus);
+
         // Create Peserta Kursus
         $peserta_kursus = new PesertaKursusModel();
         $peserta_kursus->id_kursus = $request->id_kursus;
         $peserta_kursus->id_peserta = $request->id_peserta;
         $peserta_kursus->status_peserta_kursus = 'pending';
+        $peserta_kursus->status_pembayaran = 'belum lunas';
+        $peserta_kursus->total_tagihan = $Kursus->harga;
+        $peserta_kursus->total_pembayaran = 0;
+        $peserta_kursus->tgl_tenggat_pembayaran = $Kursus->tanggal_mulai;
+        $peserta_kursus->status_sertifikat = 'belum teribit';
         $peserta_kursus->save();
 
         return redirect('/admin/kursus/peserta/' . $request->id_kursus)->with('success', 'Peserta berhasil ditambahkan ke kursus');
