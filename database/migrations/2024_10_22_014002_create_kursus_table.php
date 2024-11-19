@@ -24,9 +24,6 @@ return new class extends Migration
             // Membuat kolom deskripsi
             $table->text('deskripsi')->nullable();
 
-            // Membuat kolom durasi
-            $table->integer('durasi')->default(0);
-
             // Membuat kolom tanggal_mulai
             $table->date('tanggal_mulai');
 
@@ -34,10 +31,7 @@ return new class extends Migration
             $table->date('tanggal_selesai');
 
             // Membuat kolom jumlah_peserta
-            $table->integer('jumlah_peserta')->default(0);
-
-            // Membuat kolom Jumlah Pertemuan
-            $table->integer('jumlah_pertemuan')->default(0);
+            $table->integer('jumlah_peserta_max')->default(0);
 
             // Status kursus
             $table->enum('status_kursus', ['open', 'close'])->default('open');

@@ -31,4 +31,9 @@ class PesertaKursusModel extends Model
     {
         return $this->belongsTo(KursusModel::class, 'id_kursus', 'id_kursus');
     }
+
+    public function pembayaran()
+    {
+        return $this->hasMany(PembayaranModel::class, 'id_peserta_kursus', 'id_peserta_kursus');
+    }
 }

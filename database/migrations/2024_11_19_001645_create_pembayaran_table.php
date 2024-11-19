@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_peserta_kursus');
             $table->foreign('id_peserta_kursus')->references('id_peserta_kursus')->on('peserta_kursus');
             $table->string('total_pembayaran');
+            $table->string('bukti_pembayaran')->nullable();
             $table->enum('status_pembayaran', ['pending', 'lunas', 'gagal'])->default('pending');
             $table->timestamps();
         });

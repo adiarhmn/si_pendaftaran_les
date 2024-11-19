@@ -126,6 +126,13 @@
                     <span>Kursus</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link  {{ Request::is('admin/pembayaran*') ? 'active' : 'collapsed' }}"
+                    href="{{ url('admin/pembayaran') }}">
+                    <i class="bi bi-currency-dollar"></i>
+                    <span>Pembayaran</span>
+                </a>
+            </li>
         </ul>
 
     </aside><!-- End Sidebar-->

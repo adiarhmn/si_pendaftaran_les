@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\KursusController;
+use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PesertaController;
 use App\Http\Controllers\PetugasController;
 use Illuminate\Support\Facades\Route;
@@ -80,7 +81,12 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkRole:admin'], function 
         Route::post('/update/{id}', [KursusController::class, 'update']);
         Route::delete('/delete/{id}', [KursusController::class, 'delete']);
 
+        // Peserta Kursus
         Route::get('/peserta/{id}', [KursusController::class, 'pesertaKursus'])->name('admin.kursus.peserta');
         Route::post('/peserta/store', [KursusController::class, 'tambahPesertaKursus'])->name('admin.kursus.peserta.store');
+        Route::get('/pembayaran/{id}', [KursusController::class], 'pembayaranKursus')->name('admin.kursus.pembayaran');
+
+        // Pembayaran Kursus
+        Route::post('/upload-pembayaran-peserta', [PembayaranController::class, 'uploadPembayaran']);
     });
 });

@@ -21,7 +21,7 @@
                         <img src={{ asset('images/' . $kursus->gambar_cover) }} alt="" style="width:100%;">
                     </div>
                     <div class="col-md-10">
-                        <table style="width: 100%;">
+                        <table style="width: 100%; font-size: 14px;">
                             <tr>
                                 <td>Nama Kursus</td>
                                 <td>:</td>
@@ -119,7 +119,7 @@
                 </form>
 
                 {{-- @Table --}}
-                <table class="table border">
+                <table class="table border" style="font-size: 13px;">
                     <thead>
                         <tr>
                             <th scope="col">No</th>
@@ -128,6 +128,7 @@
                             <th scope="col">Alamat</th>
                             <th scope="col">Status Kursus</th>
                             <th scope="col">Status Pembayaran</th>
+                            <th scope="col">Tagihan</th>
                             <th scope="col">Aksi</th>
                         </tr>
                     </thead>
@@ -150,7 +151,109 @@
                                         {{ $item->status_pembayaran }}
                                     </span>
                                 </td>
+                                <td>{{ rupiah($item->total_tagihan) }}</td>
                                 <td>
+                                    <!-- Modal Pembayaran -->
+                                    <div class="modal fade" id="pembayaranModal{{ $item->id_peserta_kursus }}"
+                                        tabindex="-1" aria-labelledby="pembayaranModalLabel{{ $item->id_peserta_kursus }}"
+                                        aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title"
+                                                        id="pembayaranModalLabel{{ $item->id_peserta_kursus }}">
+                                                        Detail
+                                                        Pembayaran</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <table class="table">
+                                                        <tr>
+                                                            <th>Nama Peserta</th>
+                                                            <td>{{ $item->peserta->nama_peserta }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Total Tagihan</th>
+                                                            <td>{{ rupiah($item->total_tagihan) }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Status Pembayaran</th>
+                                                            <td>{{ $item->status_pembayaran }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Tanggal Pembayaran</th>
+                                                            <td>{{ $item->tanggal_pembayaran }}</td>
+                                                        </tr>
+                                                    </table>
+
+                                                    {{-- List Pembayaran --}}
+                                                    <div>Data Pembayaran</div>
+                                                    <div>
+                                                        @foreach ($item->pembayaran as $pembayran_item)
+                                                            <div>
+                                                                <img src="{{ url('images/bukti_pembayaran/' . $pembayran_item->bukti_pembayaran) }}"
+                                                                    alt="" style="width: 100px;">
+                                                                <div>{{ rupiah($pembayran_item->total_pembayaran) }}</div>
+                                                                <div>{{ $pembayran_item->tanggal_pembayaran }}</div>
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Tutup</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{-- End Modal Pembayaran --}}
+
+                                    {{-- Modal Tambah Pembayaran --}}
+                                    <div class="modal fade" id="tambahPembayaranModal{{ $item->id_peserta_kursus }}"
+                                        tabindex="-1"
+                                        aria-labelledby="tambahPembayaranModalLabel{{ $item->id_peserta_kursus }}"
+                                        aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title"
+                                                        id="tambahPembayaranModalLabel{{ $item->id_peserta_kursus }}">
+                                                        Tambah Pembayaran - {{ $item->peserta->nama_peserta }}</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <form action="{{ url('admin/kursus/upload-pembayaran-peserta') }}"
+                                                    method="POST" enctype="multipart/form-data">
+                                                    @csrf
+                                                    <div class="modal-body">
+                                                        <input type="hidden" name="id_peserta_kursus"
+                                                            value="{{ $item->id_peserta_kursus }}">
+                                                        <div class="mb-3">
+                                                            <label for="total_pembayaran" class="form-label">Total
+                                                                Pembayaran</label>
+                                                            <input type="number" class="form-control"
+                                                                id="total_pembayaran" name="total_pembayaran" required>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="bukti_pembayaran" class="form-label">Bukti
+                                                                Pembayaran</label>
+                                                            <input type="file" class="form-control"
+                                                                id="bukti_pembayaran" name="bukti_pembayaran" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Batal</button>
+                                                        <button type="submit" class="btn btn-primary">Tambah</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {{-- Akhir Modal Pembayaran --}}
+
+                                    {{-- Dropdown --}}
                                     <button type="button"
                                         class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split"
                                         data-bs-toggle="dropdown" aria-expanded="false">
@@ -158,21 +261,22 @@
                                     </button>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <a href="{{ url('admin/kursus/peserta/' . $item->id_kursus) }}"
-                                                class="dropdown-item">
-                                                <div class="btn btn-primary btn-sm w-100">Terima</div>
+                                            <a href="#" class="dropdown-item" data-bs-toggle="modal"
+                                                data-bs-target="#pembayaranModal{{ $item->id_peserta_kursus }}">
+                                                Lihat Pembayaran
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="dropdown-item" data-bs-toggle="modal"
+                                                data-bs-target="#tambahPembayaranModal{{ $item->id_peserta_kursus }}">
+                                                Tambah Pembayaran
                                             </a>
                                         </li>
                                         <li>
                                             <a href="{{ url('admin/kursus/peserta/' . $item->id_kursus) }}"
                                                 class="dropdown-item">
-                                                <div class="btn btn-warning btn-sm w-100">Tolak</div>
+                                                Hapus
                                             </a>
-                                        </li>
-                                        <li>
-                                            <button type="button" class="dropdown-item">
-                                                <div class="btn btn-danger btn-sm w-100">Hapus</div>
-                                            </button>
                                         </li>
                                     </ul>
                                 </td>
