@@ -54,7 +54,7 @@ class PesertaController extends Controller
         // Create Akun
         $akun = new AkunModel();
         $akun->username = $request->username;
-        $akun->level = 'petugas';
+        $akun->level = 'peserta';
         $akun->password = password_hash($request->password, PASSWORD_DEFAULT);
         $akun->save();
 

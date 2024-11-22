@@ -9,7 +9,6 @@ class PesertaKursusModel extends Model
     protected $table = 'peserta_kursus';
     protected $primaryKey = 'id_peserta_kursus';
     protected $fillable = [
-        'status_peserta_kursus',
         'status_pelatihan',
         'id_peserta',
         'id_kursus',

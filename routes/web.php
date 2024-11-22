@@ -89,4 +89,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkRole:admin'], function 
         // Pembayaran Kursus
         Route::post('/upload-pembayaran-peserta', [PembayaranController::class, 'uploadPembayaran']);
     });
+
+    // Kelola Pembayaran
+    Route::group(['prefix' => 'pembayaran'], function () {
+        Route::get('/', [PembayaranController::class, 'index']);
+        Route::post('/konfirmasi', [PembayaranController::class, 'konfirmasi']);
+    });
 });

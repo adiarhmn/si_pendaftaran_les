@@ -128,7 +128,8 @@
                             <th scope="col">Alamat</th>
                             <th scope="col">Status Kursus</th>
                             <th scope="col">Status Pembayaran</th>
-                            <th scope="col">Tagihan</th>
+                            <th scope="col">Sisa Tagihan</th>
+                            <th scope="col">Dibayar</th>
                             <th scope="col">Aksi</th>
                         </tr>
                     </thead>
@@ -140,18 +141,16 @@
                                 <td>{{ $item->peserta->telp }}</td>
                                 <td>{{ $item->peserta->alamat }}</td>
                                 <td>
-                                    <span style="text-transform: uppercase;"
-                                        class="badge rounded-pill @if ($item->status_peserta == 'approved') bg-primary @else bg-danger @endif">
-                                        {{ $item->status_peserta_kursus }}
-                                    </span>
+                                    {{ $item->status_pelatihan }}
                                 </td>
                                 <td>
                                     <span style="text-transform: uppercase;"
-                                        class="badge rounded-pill @if ($item->status_pembayaran == 'approved') bg-primary @else bg-danger @endif">
+                                        class="badge rounded-pill @if ($item->status_pembayaran == 'lunas') bg-primary @else bg-danger @endif">
                                         {{ $item->status_pembayaran }}
                                     </span>
                                 </td>
                                 <td>{{ rupiah($item->total_tagihan) }}</td>
+                                <td>{{ rupiah($item->total_pembayaran) }}</td>
                                 <td>
                                     <!-- Modal Pembayaran -->
                                     <div class="modal fade" id="pembayaranModal{{ $item->id_peserta_kursus }}"
@@ -190,13 +189,74 @@
                                                     {{-- List Pembayaran --}}
                                                     <div>Data Pembayaran</div>
                                                     <div>
-                                                        @foreach ($item->pembayaran as $pembayran_item)
-                                                            <div>
-                                                                <img src="{{ url('images/bukti_pembayaran/' . $pembayran_item->bukti_pembayaran) }}"
-                                                                    alt="" style="width: 100px;">
-                                                                <div>{{ rupiah($pembayran_item->total_pembayaran) }}</div>
-                                                                <div>{{ $pembayran_item->tanggal_pembayaran }}</div>
-                                                            </div>
+                                                        @foreach ($item->pembayaran as $pembayaran_item)
+                                                            <table class="w-100">
+                                                                <tr>
+                                                                    <td>
+                                                                        <img src="{{ url('images/bukti_pembayaran/' . $pembayaran_item->bukti_pembayaran) }}"
+                                                                            alt="" style="width: 100px;">
+                                                                    </td>
+                                                                    <td>
+                                                                        <div>
+                                                                            {{ rupiah($pembayaran_item->total_pembayaran) }}
+                                                                        </div>
+                                                                    </td>
+                                                                    <td style="text-transform: uppercase">
+                                                                        @if ($pembayaran_item->status_pembayaran == 'pending')
+                                                                            <span
+                                                                                class="badge bg-warning text-dark">{{ $pembayaran_item->status_pembayaran }}</span>
+                                                                        @elseif ($pembayaran_item->status_pembayaran == 'lunas')
+                                                                            <span
+                                                                                class="badge bg-success">{{ $pembayaran_item->status_pembayaran }}</span>
+                                                                        @else
+                                                                            <span
+                                                                                class="badge bg-danger">{{ $pembayaran_item->status_pembayaran }}</span>
+                                                                        @endif
+                                                                    </td>
+
+                                                                    <td>
+                                                                        {{-- Dropdown --}}
+                                                                        <button type="button"
+                                                                            class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split"
+                                                                            data-bs-toggle="dropdown"
+                                                                            aria-expanded="false">
+                                                                            <span class="visually-hidden">Toggle
+                                                                                Dropdown</span>
+                                                                        </button>
+                                                                        <ul class="dropdown-menu">
+                                                                            <li>
+                                                                                <form
+                                                                                    action="{{ url('admin/pembayaran/konfirmasi') }}"
+                                                                                    method="POST">
+                                                                                    @csrf
+                                                                                    <input type="hidden"
+                                                                                        name="id_pembayaran"
+                                                                                        value="{{ $pembayaran_item->id_pembayaran }}">
+                                                                                    <input type="hidden"
+                                                                                        name="status_pembayaran"
+                                                                                        value="lunas">
+                                                                                    <button type="submit"
+                                                                                        class="dropdown-item">Terima</button>
+                                                                                </form>
+                                                                            </li>
+                                                                            <li>
+                                                                                <form
+                                                                                    action="{{ url('admin/pembayaran/konfirmasi') }}">
+                                                                                    @csrf
+                                                                                    <input type="hidden"
+                                                                                        name="id_pembayaran"
+                                                                                        value="{{ $pembayaran_item->id_pembayaran }}">
+                                                                                    <input type="hidden"
+                                                                                        name="status_pembayaran"
+                                                                                        value="gagal">
+                                                                                    <button type="submit"
+                                                                                        class="dropdown-item">Tolak</button>
+                                                                                </form>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
                                                         @endforeach
                                                     </div>
                                                 </div>

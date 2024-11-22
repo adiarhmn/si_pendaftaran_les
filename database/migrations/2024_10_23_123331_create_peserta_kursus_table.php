@@ -15,9 +15,6 @@ return new class extends Migration
             // Membuat Primary Key id_peserta_kursus
             $table->id('id_peserta_kursus');
 
-            // Membuat kolom status_peserta_kursus
-            $table->enum('status_peserta_kursus', ['pending', 'diterima', 'ditolak'])->default('pending');
-
             // Membuat kolom status_pelatihan
             $table->enum('status_pelatihan', ['belum dimulai', 'berlangsung', 'selesai'])->default('belum dimulai');
 
