@@ -123,4 +123,22 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Midtrans Configuration
+    |--------------------------------------------------------------------------
+    |
+    | This configuration is used to setup Midtrans payment gateway.
+    |
+     */
+
+    'midtrans' => [
+        'isProduction' => env('MIDTRANS_IS_PRODUCTION', false),
+        'merchantId' => env('MIDTRANS_MERCHANT_ID', ''),
+        'serverKey' => env('MIDTRANS_SERVER_KEY', ''),
+        'clientKey' => env('MIDTRANS_CLIENT_KEY', ''),
+        // 'api_url' => env('MIDTRANS_API_URL', ''),
+        // 'snap_url' => env('MIDTRANS_SNAP_URL', ''),
+    ],
 ];

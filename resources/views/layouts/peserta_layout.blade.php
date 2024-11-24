@@ -34,6 +34,9 @@
 
     {{-- Sweet Alert CSS --}}
     <link rel="stylesheet" href="{{ url('assets/sweetalert2/dist-alert/sweetalert2.min.css') }}">
+
+    @yield('css')
+    @yield('script-head')
 </head>
 
 <body>
@@ -100,8 +103,8 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ Request::is('peserta/akun*') ? 'active' : 'collapsed' }}"
-                    href="{{ url('peserta/akun') }}">
+                <a class="nav-link {{ Request::is('peserta/profile*') ? 'active' : 'collapsed' }}"
+                    href="{{ url('peserta/profile') }}">
                     <i class="bi bi-person-square"></i>
                     <span>Profile</span>
                 </a>
@@ -116,7 +119,7 @@
                 <a class="nav-link  {{ Request::is('peserta/kursus*') ? 'active' : 'collapsed' }}"
                     href="{{ url('peserta/kursus') }}">
                     <i class="bi bi-journal-bookmark-fill"></i>
-                    <span>Kursus Saya</span>
+                    <span>Kursus</span>
                 </a>
             </li>
         </ul>
@@ -147,7 +150,6 @@
 
     {{-- Sweetalert --}}
     <script src="{{ url('assets/sweetalert2/dist-alert/sweetalert2.min.js') }}"></script>
-
 
     @yield('script')
 </body>

@@ -95,13 +95,11 @@ class PesertaController extends Controller
     // @METHOD update() akan mengupdate data peserta ke database
     public function update(PesertaRequest $request, $id)
     {
-
         // Mengambil data peserta berdasarkan id
         $peserta = PesertaModel::find($id);
 
-
         // Memperbarui jika password tidak kosong
-        if ($request->filled('passsword')) {
+        if ($request->filled('password')) {
             $akun = AkunModel::find($peserta->id_akun);
             $akun->password = password_hash($request->password, PASSWORD_DEFAULT);
             $akun->save();
@@ -113,7 +111,14 @@ class PesertaController extends Controller
         $peserta->alamat = $request->alamat;
         $peserta->save();
 
-        return redirect('/admin/peserta')->with('success', 'Data peserta berhasil diupdate');
+        if (Auth::user()->level == 'admin') {
+            return redirect('/admin/peserta')->with('success', 'Data peserta berhasil diupdate');
+        }
+        if (Auth::user()->level == 'peserta') {
+            return redirect('/peserta/profile')->with('success', 'Data peserta berhasil diupdate');
+        }
+
+        return redirect(Auth::user()->level . '/peserta')->with('success', 'Data peserta berhasil diupdate');
     }
 
     // ====================================================================================
@@ -126,12 +131,20 @@ class PesertaController extends Controller
         return redirect('/admin/peserta')->with('success', 'Data peserta berhasil dihapus');
     }
 
+    public function profile()
+    {
+        $peserta = Auth::user()->peserta;
+        return view('peserta/profile', [
+            'peserta' => $peserta
+        ]);
+    }
+
 
     public function indexPeserta() {}
 
     public function kursusSaya()
     {
-    //    $list_kursus = 
+        //    $list_kursus = 
     }
 
     public function registerCourse(Request $request) {}

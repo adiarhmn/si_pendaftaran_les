@@ -9,6 +9,7 @@ use App\Models\PesertaModel;
 use App\Models\PetugasModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Midtrans\Config;
 
 class KursusController extends Controller
 {
@@ -161,5 +162,63 @@ class KursusController extends Controller
         $peserta_kursus->save();
 
         return redirect('/admin/kursus/peserta/' . $request->id_kursus)->with('success', 'Peserta berhasil ditambahkan ke kursus');
+    }
+
+
+    public function daftar_sekarang($id)
+    {
+
+
+        // Mengambil data kursus berdasarkan id
+        $kursus = KursusModel::find($id);
+
+        // Midtrans Config 
+        Config::$serverKey = config('app.midtrans.serverKey');
+        Config::$isProduction = false;
+        Config::$isSanitized = true;
+        Config::$is3ds = true;
+
+        // User atau Peserta
+        $peserta = PesertaModel::where('id_akun', Auth::user()->id_akun)->first();
+        if (!$peserta) {
+            return redirect()->back()->with('error', 'Anda belum terdaftar sebagai peserta');
+        }
+
+        // Cek apakah peserta sudah terdaftar di kursus
+        $peserta_kursus = PesertaKursusModel::where('id_kursus', $id)
+            ->where('id_peserta', $peserta->id_peserta)
+            ->first();
+        if ($peserta_kursus) {
+            return redirect()->back()->with('error', 'Anda sudah terdaftar di kursus ini');
+        }
+
+        // // Create Peserta Kursus
+        // $peserta_kursus = new PesertaKursusModel();
+        // $peserta_kursus->id_kursus = $id;
+        // $peserta_kursus->id_peserta = $peserta->id_peserta;
+        // $peserta_kursus->status_pembayaran = 'belum lunas';
+        // $peserta_kursus->total_tagihan = $kursus->harga;
+        // $peserta_kursus->total_pembayaran = 0;
+        // $peserta_kursus->tgl_tenggat_pembayaran = $kursus->tanggal_mulai;
+        // $peserta_kursus->status_sertifikat = 'belum terbit';
+        // $peserta_kursus->save();
+
+        $params = array(
+            'transaction_details' => array(
+                'order_id' => rand(),
+                'gross_amount' => $kursus->harga,
+            ),
+            'customer_details' => array(
+                'name' => $peserta->nama_peserta,
+                'phone' => $peserta->telp,
+            ),
+        );
+
+        $snapToken = \Midtrans\Snap::getSnapToken($params);
+
+        return view(Auth::user()->level . '/kursus/kursus_detail', [
+            'kursus' => $kursus,
+            'snapToken' => $snapToken
+        ]);
     }
 }

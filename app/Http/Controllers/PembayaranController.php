@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\PembayaranModel;
 use App\Models\PesertaKursusModel;
 use Illuminate\Http\Request;
+use Midtrans\Config;
 
 class PembayaranController extends Controller
 {
+
     public function index()
     {
         $list_pembayaran = PembayaranModel::all();
@@ -66,5 +68,33 @@ class PembayaranController extends Controller
         }
 
         return redirect()->back()->with('success', 'Pembayaran Berhasil Dikonfirmasi');
+    }
+
+
+    public function midtrans_checkout(Request $request)
+    {
+        Config::$serverKey = config('app.midtrans.serverKey');
+        Config::$isProduction = false;
+        Config::$isSanitized = true;
+        Config::$is3ds = true;
+
+        // Validasi Input
+        $request->validate([
+            'id_kursus' => 'required',
+            'total_pembayaran' => 'required|numeric',
+        ]);
+
+        $params = array(
+            'transaction_details' => array(
+                'order_id' => rand(),
+                'gross_amount' => 10000,
+            ),
+            'customer_details' => array(
+                'name' => 'budi',
+                'phone' => '08111222333',
+            ),
+        );
+
+        $snapToken = \Midtrans\Snap::getSnapToken($params);
     }
 }

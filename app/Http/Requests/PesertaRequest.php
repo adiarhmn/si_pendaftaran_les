@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\PesertaModel;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PesertaRequest extends FormRequest
@@ -21,16 +22,17 @@ class PesertaRequest extends FormRequest
      */
     public function rules(): array
     {
-        $id = $this->route('id') ?? '';
+        $id_peserta = $this->route('id') ?? '';
+        $peserta = PesertaModel::find($id_peserta);
         return [
             'username' => [
                 'required',
                 'alpha_num',
                 'max:50',
-                'unique:akun,username,' . $id . ',id_akun',
+                'unique:akun,username,' . $peserta->id_akun . ',id_akun',
             ],
             'password' => [
-                $id ? 'nullable' : 'required',
+                $id_peserta ? 'nullable' : 'required',
                 'min:8',
             ],
             'nama_peserta' => [
@@ -41,7 +43,7 @@ class PesertaRequest extends FormRequest
                 'required',
                 'numeric',
                 'digits_between:10,13',
-                'unique:peserta,telp,' . $id . ',id_peserta',
+                'unique:peserta,telp,' . $id_peserta . ',id_peserta',
 
             ],
             'alamat' => [

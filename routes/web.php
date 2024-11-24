@@ -34,8 +34,10 @@ Route::group(['prefix' => ''], function () {
 Route::group(['prefix' => 'peserta', 'middleware' => 'checkRole:peserta'], function () {
     Route::get('dashboard', [DashboardController::class, 'indexPeserta']);  // Menampilkan halaman dashboard
     Route::get('kursus', [PesertaController::class, 'kursusSaya'])->name('peserta.kursus.detail');
-    Route::get('kursus/{id}', [KursusController::class, 'detail'])->name('peserta.kursus.detail');
+    Route::get('kursus/{id}', [KursusController::class, 'daftar_sekarang'])->name('peserta.kursus.daftar_sekarang');
     Route::get('register', [PesertaController::class, 'pesertaRegister'])->name('peserta.register');
+    Route::get('profile', [PesertaController::class, 'profile'])->name('peserta.profile');
+    Route::post('profile/{id}', [PesertaController::class, 'update'])->name('peserta.update.profile');
 });
 
 // ===================================== ADMIN ROUTES ===================================== 
