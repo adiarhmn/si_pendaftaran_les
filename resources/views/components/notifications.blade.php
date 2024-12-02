@@ -24,3 +24,17 @@
         });
     </script>
 @endif
+
+
+@if (session('warning'))
+    <script>
+        // Setelah Page di Load, Munculkan Toast
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                icon: "warning",
+                title: "Warning",
+                text: "{{ session('warning') }}",
+            });
+        });
+    </script>
+@endif

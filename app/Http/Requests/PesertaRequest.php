@@ -29,7 +29,7 @@ class PesertaRequest extends FormRequest
                 'required',
                 'alpha_num',
                 'max:50',
-                'unique:akun,username,' . $peserta->id_akun . ',id_akun',
+                'unique:akun,username,' . $id_peserta . ',id_akun',
             ],
             'password' => [
                 $id_peserta ? 'nullable' : 'required',

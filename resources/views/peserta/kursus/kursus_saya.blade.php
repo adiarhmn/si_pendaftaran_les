@@ -1,102 +1,214 @@
+@use('Carbon\Carbon')
 @extends('layouts.peserta_layout')
-
+@section('script-head')
+    <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js"
+        data-client-key={{ config('app.midtrans.clientKey') }}></script>
+@endsection
 @section('content')
     {{-- @Page Title --}}
     <div class="pagetitle">
-        <h1>Kursus</h1>
+        <h1>Kursus Saya</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ url('admin/kursus') }}">Data Kursus</a></li>
+                <li class="breadcrumb-item"><a href="{{ url('admin/kursus') }}">Data Kursus Saya</a></li>
             </ol>
         </nav>
     </div>
 
-    {{-- @Section Content --}}
+
     <section class="section">
-        <div class="card">
-            <div class="card-body">
-                {{-- @Head Card --}}
-                <div class="d-flex justify-content-between align-items-center">
-                    <h5 class="card-title">Daftar Data Kursus</h5>
-                    <a href="{{ url('admin/kursus/create') }}" class="btn btn-primary">Tambah Kursus</a>
+        @foreach ($list_kursus as $index => $item)
+            <div class="card">
+                <div class="card-body pt-3">
+                    <div class="row">
+                        <div class="col-md-2 mb-3">
+                            <img src={{ asset('images/' . $item->kursus->gambar_cover) }} alt="" style="width:100%;">
+                        </div>
+                        <div class="col-md-10">
+                            {{-- Kursus --}}
+                            <div class="d-flex gap-1 mb-2">
+                                <h5 class="fw-bold m-0">{{ $item->kursus->nama_kursus }}</h5>
+                                {{-- Status Kursus --}}
+                                @if ($item->status_pelatihan == 'berlangsung')
+                                    <span class="badge bg-primary text-capitalize">{{ $item->status_pelatihan }}</span>
+                                @elseif ($item->status_pelatihan == 'Belum Dimulai')
+                                    <span class="badge bg-warning text-capitalize">{{ $item->status_pelatihan }}</span>
+                                @else
+                                    <span class="badge bg-danger text-capitalize">{{ $item->status_pelatihan }}</span>
+                                @endif
+                            </div>
+                            <p class="m-0 text-secondary">
+                                {{ $item->kursus->deskripsi }}
+                            </p>
+                            <table style="width: 100%; font-size: 12px; margin-bottom: 10px">
+                                <tbody>
+                                    <tr>
+                                        <td style="width: 200px;">Pengajar / Petugas</td>
+                                        <td>:</td>
+                                        <td>{{ $item->kursus->petugas->nama_petugas }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Durasi</td>
+                                        <td>:</td>
+                                        <td>{{ $item->kursus->durasi }} JP</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tanggal Mulai</td>
+                                        <td>:</td>
+                                        <td>{{ Carbon::parse($item->kursus->tanggal_mulai)->translatedFormat('d F Y') }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tanggal Selesai</td>
+                                        <td>:</td>
+                                        <td>{{ Carbon::parse($item->kursus->tanggal_selesai)->translatedFormat('d F Y') }}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            {{-- Pembayaran --}}
+                            <h5 class="fw-bold m-0">Pembayaran</h5>
+                            <table style="width: 100%; font-size: 12px;">
+                                <tbody>
+                                    <tr>
+                                        <td style="width: 200px;">Tenggat Pembayaran</td>
+                                        <td>:</td>
+                                        <td
+                                            class="fw-bold {{ $item->tgl_tenggat_pembayaran < date('Y-m-d') ? 'text-danger' : '' }}">
+                                            {{ Carbon::parse($item->tgl_tenggat_pembayaran)->translatedFormat('d F Y') }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sisa Tagihan</td>
+                                        <td>:</td>
+                                        <td>Rp. {{ number_format($item->total_tagihan, 0, ',', '.') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total Dibayar</td>
+                                        <td>:</td>
+                                        <td>Rp. {{ number_format($item->total_pembayaran, 0, ',', '.') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Status Pembayaran</td>
+                                        <td>:</td>
+                                        <td>
+                                            @if ($item->status_pembayaran == 'lunas')
+                                                <span
+                                                    class="badge bg-success text-capitalize">{{ $item->status_pembayaran }}
+                                                </span>
+                                            @else
+                                                <span
+                                                    class="badge bg-warning text-capitalize">{{ $item->status_pembayaran }}
+                                                </span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            {{-- Tombol Bayar --}}
+                            <div class="d-flex mt-3">
+
+                                @if ($item->status_pembayaran != 'lunas')
+                                    {{-- Bayar Full --}}
+                                    <form action="{{ url('peserta/buat-token-pembayaran') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="id_peserta_kursus"
+                                            value="{{ $item->id_peserta_kursus }}">
+                                        <input type="hidden" name="pembayaran" value="100%">
+                                        <button type="submit" class="btn btn-primary btn-sm">Bayar 100%</button>
+                                    </form>
+                                @endif
+
+                                @if ($item->total_pembayaran < 0)
+                                    {{-- Bayar Sebagian --}}
+                                    <form action="{{ url('peserta/buat-token-pembayaran') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="id_peserta_kursus"
+                                            value="{{ $item->id_peserta_kursus }}">
+                                        <input type="hidden" name="pembayaran" value="50%">
+                                        <button type="submit" class="btn btn-primary btn-sm ms-2">Bayar 50%</button>
+                                    </form>
+                                @endif
+
+                                {{-- Tombol Modal Riwayat Pembayaran --}}
+                                <button class="btn btn-info btn-sm ms-2" data-bs-toggle="modal"
+                                    data-bs-target="#riwayatPembayaranModal{{ $item->id_peserta_kursus }}">Riwayat
+                                    Pembayaran</button>
+                                <!-- Modal Riwayat Pembayaran -->
+                                <div class="modal fade" id="riwayatPembayaranModal{{ $item->id_peserta_kursus }}"
+                                    tabindex="-1" aria-labelledby="riwayatPembayaranModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="riwayatPembayaranModalLabel">Riwayat Pembayaran
+                                                </h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>No</th>
+                                                            <th>Tanggal Pembayaran</th>
+                                                            <th>Jumlah Pembayaran</th>
+                                                            {{-- Bukti Pembayaran --}}
+                                                            <th>Bukti Pembayaran</th>
+                                                            <th>Status</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($item->pembayaran as $index => $pembayaran)
+                                                            <tr>
+                                                                <td>{{ $index + 1 }}</td>
+                                                                <td>{{ Carbon::parse($pembayaran->tanggal_pembayaran)->translatedFormat('d F Y') }}
+                                                                </td>
+                                                                <td>Rp.
+                                                                    {{ number_format($pembayaran->total_pembayaran, 0, ',', '.') }}
+                                                                </td>
+                                                                <td>
+                                                                    @if ($pembayaran->bukti_pembayaran)
+                                                                        {{-- Jika Bukti Pembayaran adalah Datetime bukan file maka dari Midatrans --}}
+                                                                        @if (is_string($pembayaran->bukti_pembayaran))
+                                                                            <span>
+                                                                                Midtrans Payment
+                                                                            </span>
+                                                                        @else
+                                                                            <a href="{{ asset('images/' . $pembayaran->bukti_pembayaran) }}"
+                                                                                target="_blank">Lihat Bukti</a>
+                                                                        @endif
+                                                                    @else
+                                                                        -
+                                                                    @endif
+                                                                </td>
+                                                                <td>{{ $pembayaran->status_pembayaran }}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Tutup</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {{-- Tombol Batalkan --}}
+                                @if ($item->status_pembayaran == 'Belum Lunas')
+                                    <button class="btn btn-danger btn-sm ms-2" data-bs-toggle="modal"
+                                        data-bs-target="#confirmDeleteModal{{ $item->id }}">Batalkan</button>
+                                @endif
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
-
-                {{-- @Search Bar --}}
-                <form class="input-group mb-3" style="max-width:350px; " action="{{ url()->current() }}">
-                    <input value="{{ request()->query('query') }}" type="text" name="query" type="text"
-                        class="form-control" placeholder="Cari..." aria-label="Cari..." aria-describedby="button-addon2">
-                    <button class="btn btn-outline-primary" type="submit" id="button-addon2"><i
-                            class="bi bi-search"></i></button>
-                </form>
-
-                {{-- @Table --}}
-                <table class="table border">
-                    <thead>
-                        <tr>
-                            <th scope="col">No</th>
-                            <th scope="col">Cover</th>
-                            <th scope="col">Nama Kursus</th>
-                            <th scope="col">Harga</th>
-                            <th scope="col">Deskripsi</th>
-                            <th scope="col">Durasi</th>
-                            <th scope="col">Tanggal</th>
-                            <th scope="col">Status Kursus</th>
-                            <th scope="col">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($list_kursus as $index => $item)
-                            <tr>
-                                <th scope="row">{{ $index + 1 + (($_GET['page'] ?? 1) - 1) * 5 }}</th>
-                                <td>
-                                    <img src="{{ url('images/' . $item->gambar_cover) }}" alt="{{ $item->nama_kursus }}"
-                                        style="width: 50px;">
-                                </td>
-                                <td>{{ $item->nama_kursus }}</td>
-                                <td>{{ rupiah($item->harga) }}</td>
-                                <td>{{ $item->deskripsi }}</td>
-                                <td>{{ $item->durasi }}</td>
-                                <td>{{ $item->tanggal_mulai }} - {{ $item->tanggal_selesai }}</td>
-                                <td>
-                                    <span
-                                        class="badge rounded-pill 
-                                        @if ($item->status_kursus == 'open') bg-primary 
-                                        @else bg-danger @endif">
-                                        {{ $item->status_kursus }}
-                                    </span>
-                                </td>
-                                <td>
-                                    <button type="button"
-                                        class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        <span class="visually-hidden">Toggle Dropdown</span>
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            <a href="{{ url('admin/kursus/edit/' . $item->id_kursus) }}"
-                                                class="dropdown-item">Edit</a>
-                                        </li>
-                                        <li>
-                                            <button type="button" class="dropdown-item"
-                                                onclick="confirmDelete('{{ $item->nama_kursus }}', '{{ url('admin/kursus/delete/' . $item->id_kursus) }}')">Hapus</button>
-                                        </li>
-                                    </ul>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                {{-- End Table --}}
-
-                {{-- @Jika Data Tidak Ada --}}
-                @if (count($list_kursus) == 0)
-                    <div class="alert alert-warning text-center">Data Tidak Ditemukan</div>
-                @endif
-
-                {{-- Paginate --}}
-                {{ $list_kursus->appends(request()->query())->links('components/pagination') }}
             </div>
-        </div>
+        @endforeach
     </section>
 @endsection
 
@@ -104,4 +216,5 @@
 @section('script')
     @include('components/notifications')
     @include('components/confirm_delete')
+    @include('components/midtrans_popup')
 @endsection

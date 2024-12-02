@@ -122,6 +122,13 @@
                     <span>Kursus</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link  {{ Request::is('peserta/riwayat-kursus*') ? 'active' : 'collapsed' }}"
+                    href="{{ url('peserta/riwayat-kursus') }}">
+                    <i class="bi bi-clock"></i>
+                    <span>Riwayat Kursus</span>
+                </a>
+            </li>
         </ul>
     </aside><!-- End Sidebar-->
 

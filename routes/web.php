@@ -10,33 +10,44 @@ use App\Http\Controllers\PesertaController;
 use App\Http\Controllers\PetugasController;
 use Illuminate\Support\Facades\Route;
 
-// PARAMETER DEFENITION
+// PARAMETER DEFENITION (Agar Id Hanya Menerima Angka)
 Route::pattern('id', '[0-9]+');
 
 
 // ===================================== AUTH ROUTES =====================================
 Route::get('login', function () {
     return view('auth.login');
-})->name('login');
-Route::post('auth', [AuthController::class, 'auth'])->name('login.auth');
-Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+})->name('login'); // Menampilkan halaman login
+Route::post('auth', [AuthController::class, 'auth'])->name('login.auth'); // Proses login
+Route::get('logout', [AuthController::class, 'logout'])->name('logout'); // Proses logout
 Route::get('register', function () {
     return view('auth.register');
-})->name('auth.register');
-Route::post('register', [AuthController::class, 'register'])->name('auth.register');
+})->name('auth.register'); // Menampilkan halaman register
+Route::post('register', [AuthController::class, 'register'])->name('auth.register'); // Proses register
 
 // ===================================== PUBLIC ROUTES ===================================== 
 Route::group(['prefix' => ''], function () {
-    Route::get('/', [HomeController::class, 'index']);                      // Menampilkan halaman home
+    Route::get('/', [HomeController::class, 'index']); // Menampilkan halaman home
 });
 
 // ===================================== PESERTA ROUTES ===================================== 
 Route::group(['prefix' => 'peserta', 'middleware' => 'checkRole:peserta'], function () {
+
+    // Peserta - Dashboard
     Route::get('dashboard', [DashboardController::class, 'indexPeserta']);  // Menampilkan halaman dashboard
-    Route::get('kursus', [PesertaController::class, 'kursusSaya'])->name('peserta.kursus.detail');
-    Route::get('kursus/{id}', [KursusController::class, 'daftar_sekarang'])->name('peserta.kursus.daftar_sekarang');
-    Route::get('register', [PesertaController::class, 'pesertaRegister'])->name('peserta.register');
-    Route::get('profile', [PesertaController::class, 'profile'])->name('peserta.profile');
+
+    // Peserta - Kursus
+    Route::get('kursus', [PesertaController::class, 'kursusSaya'])->name('peserta.kursus.saya'); // Menampilkan kursus yang diikuti peserta
+    Route::get('kursus/{id}', [KursusController::class, 'daftar_sekarang'])->name('peserta.kursus.daftar_sekarang'); // Menampilkan form daftar kursus
+    Route::post('kursus/daftar', [KursusController::class, 'daftar_kursus'])->name('peserta.kursus.daftar_kursus'); // Proses daftar kursus ')
+
+    // Peserta - API Pembayaran Midtrans
+    Route::post('buat-token-pembayaran', [PembayaranController::class, 'buatTokenPembayaran'])->name('peserta.buat.token.pembayaran'); // Membuat token pembayaran midtrans
+    Route::get('notification-handler', [PembayaranController::class, 'notificationHandler'])->name('peserta.notification.handler'); // Handler notifikasi pembayaran midtrans
+    Route::post('finish-payment', [PembayaranController::class, 'finishPayment'])->name('peserta.finish.payment'); // Handler finish pembayaran midtrans
+    Route::get('notification-handler', [PembayaranController::class, 'notificationHandler'])->name('peserta.notification.handler'); // Handler notifikasi pembayaran midtrans
+    // Peserta - Profile
+    Route::get('profile', [PesertaController::class, 'profile'])->name('peserta.profile'); // Menampilkan halaman profile peserta
     Route::post('profile/{id}', [PesertaController::class, 'update'])->name('peserta.update.profile');
 });
 

@@ -73,11 +73,23 @@
                 <h5 class="fw-bold m-0">Form Pendaftaran</h5>
                 <form action="{{ url('peserta/kursus/daftar') }}" method="POST">
                     @csrf
+                    {{-- Kolom Hidden id_kursus --}}
+                    <input type="hidden" name="id_kursus" value="{{ $kursus->id_kursus }}">
+
+                    {{-- Kolom Nama Peserta --}}
                     <div class="mb-3">
                         <label for="nama_peserta" class="form-label">Nama Peserta</label>
                         <input disabled type="text" class="form-control" id="nama_peserta" name="nama_peserta"
                             value={{ Auth::user()->peserta->nama_peserta }}>
                     </div>
+
+                    {{-- Kolom Alamat --}}
+                    <div class="mb-3">
+                        <label for="alamat" class="form-label">Alamat</label>
+                        <input type="text" class="form-control" id="alamat" name="alamat" required
+                            value="{{ Auth::user()->peserta->alamat}}">
+                    </div>
+
                     <div class="mb-3">
                         <label for="hari_kursus" class="form-label">Hari Kursus</label>
                         <div class="form-check">

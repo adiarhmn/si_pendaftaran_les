@@ -167,8 +167,6 @@ class KursusController extends Controller
 
     public function daftar_sekarang($id)
     {
-
-
         // Mengambil data kursus berdasarkan id
         $kursus = KursusModel::find($id);
 
@@ -184,24 +182,15 @@ class KursusController extends Controller
             return redirect()->back()->with('error', 'Anda belum terdaftar sebagai peserta');
         }
 
-        // Cek apakah peserta sudah terdaftar di kursus
+        // Cek apakah peserta sudah terdaftar di kursus yang belum selesai
         $peserta_kursus = PesertaKursusModel::where('id_kursus', $id)
             ->where('id_peserta', $peserta->id_peserta)
+            ->where('status', '!=', 'selesai')
             ->first();
-        if ($peserta_kursus) {
-            return redirect()->back()->with('error', 'Anda sudah terdaftar di kursus ini');
-        }
 
-        // // Create Peserta Kursus
-        // $peserta_kursus = new PesertaKursusModel();
-        // $peserta_kursus->id_kursus = $id;
-        // $peserta_kursus->id_peserta = $peserta->id_peserta;
-        // $peserta_kursus->status_pembayaran = 'belum lunas';
-        // $peserta_kursus->total_tagihan = $kursus->harga;
-        // $peserta_kursus->total_pembayaran = 0;
-        // $peserta_kursus->tgl_tenggat_pembayaran = $kursus->tanggal_mulai;
-        // $peserta_kursus->status_sertifikat = 'belum terbit';
-        // $peserta_kursus->save();
+        if ($peserta_kursus) {
+            return redirect(url('peserta/kursus'))->with('warning', 'Anda sudah terdaftar di kursus ini');
+        }
 
         $params = array(
             'transaction_details' => array(
@@ -220,5 +209,27 @@ class KursusController extends Controller
             'kursus' => $kursus,
             'snapToken' => $snapToken
         ]);
+    }
+
+    // Daftar Kursus
+    public function daftar_kursus(Request $request)
+    {
+        // Validate Input
+        $request->validate([
+            'id_kursus' => 'required|exists:kursus,id_kursus'
+        ]);
+
+        // Save to Database
+        $peserta_kursus = new PesertaKursusModel();
+        $peserta_kursus->id_kursus = $request->id_kursus;
+        $peserta_kursus->id_peserta = Auth::user()->peserta->id_peserta;
+        $peserta_kursus->status_pembayaran = 'belum lunas';
+        $peserta_kursus->total_tagihan = KursusModel::find($request->id_kursus)->harga;
+        $peserta_kursus->total_pembayaran = 0;
+        $peserta_kursus->tgl_tenggat_pembayaran = KursusModel::find($request->id_kursus)->tanggal_mulai;
+        $peserta_kursus->status_sertifikat = 'belum terbit';
+        $peserta_kursus->save();
+
+        return redirect('/peserta/kursus')->with('success', 'Anda berhasil mendaftar kursus');
     }
 }

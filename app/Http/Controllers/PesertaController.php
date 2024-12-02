@@ -139,13 +139,16 @@ class PesertaController extends Controller
         ]);
     }
 
-
-    public function indexPeserta() {}
-
     public function kursusSaya()
     {
-        //    $list_kursus = 
+        // Remove snapToken Session
+        // session()->forget('snapToken');
+
+        $list_peserta_kursus = Auth::user()->peserta->peserta_kursus;
+        return view('peserta/kursus/kursus_saya', [
+            'list_kursus' => $list_peserta_kursus
+        ]);
     }
 
-    public function registerCourse(Request $request) {}
+   
 }
