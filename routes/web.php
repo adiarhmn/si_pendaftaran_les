@@ -96,6 +96,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkRole:admin'], function 
 
         // Peserta Kursus
         Route::get('/peserta/{id}', [KursusController::class, 'pesertaKursus'])->name('admin.kursus.peserta');
+        Route::delete('/peserta/{id}', [KursusController::class, 'hapusPesertaKursus'])->name('admin.hapus.kursus.peserta');
         Route::post('/peserta/store', [KursusController::class, 'tambahPesertaKursus'])->name('admin.kursus.peserta.store');
         Route::get('/pembayaran/{id}', [KursusController::class], 'pembayaranKursus')->name('admin.kursus.pembayaran');
 

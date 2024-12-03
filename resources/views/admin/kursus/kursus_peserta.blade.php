@@ -17,40 +17,26 @@
             <div class="card-body pt-3">
                 <h5 class="fw-bold m-0">Detail Kursus</h5>
                 <div class="row">
-                    <div class="col-md-2">
-                        <img src={{ asset('images/' . $kursus->gambar_cover) }} alt="" style="width:100%;">
+                    <div class="col-md-12">
+                        <img src={{ asset('images/' . $kursus->gambar_cover) }} alt="" style="width:300px;">
                     </div>
-                    <div class="col-md-10">
+                    <div class="col-md-12">
                         <table style="width: 100%; font-size: 14px;">
                             <tr>
-                                <td>Nama Kursus</td>
-                                <td>:</td>
-                                <td>{{ $kursus->nama_kursus }}</td>
+                                <td colspan="3">
+                                    <h3>{{ $kursus->nama_kursus }}</h3>
+                                </td>
                             </tr>
                             <tr>
-                                <td>Deskripsi</td>
-                                <td>:</td>
-                                <td>{{ $kursus->deskripsi }}</td>
+                                <td colspan="3" class="text-secondary">
+                                    <h5>{{ rupiah($kursus->harga) }} |
+                                        {{ $kursus->durasi }} x JP |
+                                        {{ $kursus->petugas->nama_petugas }}
+                                    </h5>
+                                </td>
                             </tr>
                             <tr>
-                                <td>Pengajar / Petugas</td>
-                                <td>:</td>
-                                <td>{{ $kursus->petugas->nama_petugas }}</td>
-                            </tr>
-                            <tr>
-                                <td>Durasi</td>
-                                <td>:</td>
-                                <td>{{ $kursus->durasi }} jam</td>
-                            </tr>
-                            <tr>
-                                <td>Tanggal Mulai</td>
-                                <td>:</td>
-                                <td>{{ $kursus->tanggal_mulai }}</td>
-                            </tr>
-                            <tr>
-                                <td>Tanggal Selesai</td>
-                                <td>:</td>
-                                <td>{{ $kursus->tanggal_selesai }}</td>
+                                <td style="font-size: 12px;" colspan="3">{!! $kursus->deskripsi !!}</td>
                             </tr>
                         </table>
                     </div>
@@ -333,10 +319,12 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="{{ url('admin/kursus/peserta/' . $item->id_kursus) }}"
-                                                class="dropdown-item">
-                                                Hapus
-                                            </a>
+                                            <form action="{{ url('admin/kursus/peserta/' . $item->id_kursus) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="dropdown-item">Hapus</button>
+                                            </form>
                                         </li>
                                     </ul>
                                 </td>

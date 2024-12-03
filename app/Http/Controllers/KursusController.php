@@ -52,8 +52,7 @@ class KursusController extends Controller
         // Menyimpan gambar cover ke folder public/images
         $file = $request->file('gambar_cover');
         $nama_file = time() . "_kursus_cover";
-        $file->move('images', $nama_file);
-
+        $file->storeAs('images/', $nama_file);
 
         $kursus = new KursusModel();
         // Menyimpan data kursus ke database
@@ -61,9 +60,6 @@ class KursusController extends Controller
         $kursus->deskripsi = $request->deskripsi;
         $kursus->durasi = $request->durasi;
         $kursus->harga = $request->harga;
-        $kursus->jumlah_peserta = $request->jumlah_peserta;
-        $kursus->tanggal_mulai = $request->tanggal_mulai;
-        $kursus->tanggal_selesai = $request->tanggal_selesai;
         $kursus->status_kursus = 'open';
         $kursus->gambar_cover = $nama_file;
         $kursus->id_petugas = $request->id_petugas;
@@ -91,11 +87,25 @@ class KursusController extends Controller
     // @METHOD update() akan mengupdate data kursus ke database
     public function update(KursusRequest $request, $id)
     {
+
+        // Jika gambar cover diubah
+        if ($request->hasFile('gambar_cover')) {
+            // Menyimpan gambar cover ke folder public/images
+            $file = $request->file('gambar_cover');
+            $nama_file = time() . "_kursus_cover";
+            $file->move(public_path('images'), $nama_file);
+        }
+
         // Mengupdate data kursus ke database
         $kursus = KursusModel::find($id);
         $kursus->nama_kursus = $request->nama_kursus;
         $kursus->deskripsi = $request->deskripsi;
+        $kursus->durasi = $request->durasi;
+        $kursus->harga = $request->harga;
         $kursus->id_petugas = $request->id_petugas;
+        if ($request->hasFile('gambar_cover')) {
+            $kursus->gambar_cover = $nama_file;
+        }
         $kursus->save();
 
         return redirect('/admin/kursus')->with('success', 'Data kursus berhasil diupdate');
@@ -157,11 +167,23 @@ class KursusController extends Controller
         $peserta_kursus->status_pembayaran = 'belum lunas';
         $peserta_kursus->total_tagihan = $Kursus->harga;
         $peserta_kursus->total_pembayaran = 0;
-        $peserta_kursus->tgl_tenggat_pembayaran = $Kursus->tanggal_mulai;
+
+        // Tenggat + 3 Hari Dari Tanggal now
+        $peserta_kursus->tgl_tenggat_pembayaran = date('Y-m-d', strtotime('+3 days', strtotime(date('Y-m-d'))));
+
         $peserta_kursus->status_sertifikat = 'belum terbit';
         $peserta_kursus->save();
 
         return redirect('/admin/kursus/peserta/' . $request->id_kursus)->with('success', 'Peserta berhasil ditambahkan ke kursus');
+    }
+
+    public function hapusPesertaKursus(int $id)
+    {
+        $peserta_kursus = PesertaKursusModel::find($id);
+        $id_kursus = $peserta_kursus->id_kursus;
+        $peserta_kursus->delete();
+
+        return redirect('/admin/kursus/peserta/' . $id_kursus)->with('success', 'Peserta berhasil dihapus dari kursus');
     }
 
 
@@ -169,12 +191,6 @@ class KursusController extends Controller
     {
         // Mengambil data kursus berdasarkan id
         $kursus = KursusModel::find($id);
-
-        // Midtrans Config 
-        Config::$serverKey = config('app.midtrans.serverKey');
-        Config::$isProduction = false;
-        Config::$isSanitized = true;
-        Config::$is3ds = true;
 
         // User atau Peserta
         $peserta = PesertaModel::where('id_akun', Auth::user()->id_akun)->first();
@@ -185,29 +201,16 @@ class KursusController extends Controller
         // Cek apakah peserta sudah terdaftar di kursus yang belum selesai
         $peserta_kursus = PesertaKursusModel::where('id_kursus', $id)
             ->where('id_peserta', $peserta->id_peserta)
-            ->where('status', '!=', 'selesai')
+            ->where('status_pelatihan', '!=', 'selesai')
             ->first();
 
         if ($peserta_kursus) {
             return redirect(url('peserta/kursus'))->with('warning', 'Anda sudah terdaftar di kursus ini');
         }
 
-        $params = array(
-            'transaction_details' => array(
-                'order_id' => rand(),
-                'gross_amount' => $kursus->harga,
-            ),
-            'customer_details' => array(
-                'name' => $peserta->nama_peserta,
-                'phone' => $peserta->telp,
-            ),
-        );
-
-        $snapToken = \Midtrans\Snap::getSnapToken($params);
 
         return view(Auth::user()->level . '/kursus/kursus_detail', [
             'kursus' => $kursus,
-            'snapToken' => $snapToken
         ]);
     }
 
@@ -226,7 +229,7 @@ class KursusController extends Controller
         $peserta_kursus->status_pembayaran = 'belum lunas';
         $peserta_kursus->total_tagihan = KursusModel::find($request->id_kursus)->harga;
         $peserta_kursus->total_pembayaran = 0;
-        $peserta_kursus->tgl_tenggat_pembayaran = KursusModel::find($request->id_kursus)->tanggal_mulai;
+        $peserta_kursus->tgl_tenggat_pembayaran = date('Y-m-d', strtotime('+3 days', strtotime(date('Y-m-d'))));
         $peserta_kursus->status_sertifikat = 'belum terbit';
         $peserta_kursus->save();
 

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('pembayaran', function (Blueprint $table) {
             $table->id('id_pembayaran');
             $table->unsignedBigInteger('id_peserta_kursus');
-            $table->foreign('id_peserta_kursus')->references('id_peserta_kursus')->on('peserta_kursus');
+            $table->foreign('id_peserta_kursus')->references('id_peserta_kursus')->on('peserta_kursus')->onDelete('cascade')->onUpdate('cascade');
             $table->string('total_pembayaran');
             $table->string('bukti_pembayaran')->nullable();
             $table->enum('status_pembayaran', ['pending', 'lunas', 'gagal'])->default('pending');

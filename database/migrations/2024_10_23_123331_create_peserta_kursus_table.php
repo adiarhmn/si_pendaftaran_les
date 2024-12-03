@@ -46,6 +46,15 @@ return new class extends Migration
             // Membuat kolom tanggal_tenggat_pembayaran
             $table->date('tgl_tenggat_pembayaran')->nullable();
 
+            // Membuat kolom Tanggal Mulai Pelatihan
+            $table->date('tgl_mulai_pelatihan')->nullable();
+            
+            // Membuat kolom Tanggal Selesai Pelatihan
+            $table->date('tgl_selesai_pelatihan')->nullable();
+
+            // Mebuat Kolom Hari Pelatihan
+            $table->string('hari_pelatihan')->nullable();
+
             // Membuat Sertifikat
             $table->string('status_sertifikat')->default('belum terbit');
 

@@ -39,8 +39,6 @@
                             <th scope="col">Harga</th>
                             <th scope="col">Deskripsi</th>
                             <th scope="col">Durasi</th>
-                            <th scope="col">Tanggal</th>
-                            <th scope="col">Jumlah Peserta</th>
                             <th scope="col">Status Kursus</th>
                             <th scope="col">Aksi</th>
                         </tr>
@@ -55,10 +53,11 @@
                                 </td>
                                 <td>{{ $item->nama_kursus }}</td>
                                 <td>{{ rupiah($item->harga) }}</td>
-                                <td>{{ $item->deskripsi }}</td>
-                                <td>{{ $item->durasi }}</td>
-                                <td>{{ $item->tanggal_mulai }} - {{ $item->tanggal_selesai }}</td>
-                                <td>{{ $item->jumlah_peserta }}</td>
+                                <td>
+                                    <a href="{{ url('admin/kursus/peserta/' . $item->id_kursus) }}"
+                                        class="dropdown-item text-primary"> Lihat Detail</a>
+                                </td>
+                                <td>{{ $item->durasi }} x JP</td>
                                 <td>
                                     <span
                                         class="badge rounded-pill 

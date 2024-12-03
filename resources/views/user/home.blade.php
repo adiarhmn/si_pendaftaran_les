@@ -42,14 +42,8 @@
                                     <img src={{ asset('images/' . $item->gambar_cover) }} alt=""
                                         style="width:100px;">
                                 </div>
-                                <ul>
-                                    <li>{{ $item->deskripsi }}</li>
-                                    <li>{{ 'Durasi ' . $item->durasi . ' Hari' }}</li>
-                                    <li>{{ 'Kouta Peserta ' . $item->jumlah_peserta }}</li>
-                                    <li style="font-size: 12px; color:rgb(5, 11, 181);">{{ $item->tanggal_mulai }} -
-                                        {{ $item->tanggal_selesai }}</li>
-                                </ul>
-                                <a href={{ route('peserta.kursus.daftar_sekarang', $item->id_kursus) }} class="btn-buy">Daftar
+                                <a href={{ route('peserta.kursus.daftar_sekarang', $item->id_kursus) }}
+                                    class="btn-buy">Daftar
                                     Sekarang</a>
                             </div>
                         </div><!-- End Pricing Item -->

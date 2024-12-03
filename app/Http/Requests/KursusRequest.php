@@ -29,27 +29,13 @@ class KursusRequest extends FormRequest
             ],
             'deskripsi' => [
                 'required',
-                'max:255',
             ],
-            'harga'=> [
+            'harga' => [
                 'required',
                 'numeric',
                 'min:0',
             ],
             'durasi' => [
-                'required',
-                'numeric',
-                'min:0',
-            ],
-            'tanggal_mulai' => [
-                'required',
-                'date',
-            ],
-            'tanggal_selesai' => [
-                'required',
-                'date',
-            ],
-            'jumlah_peserta' => [
                 'required',
                 'numeric',
                 'min:0',

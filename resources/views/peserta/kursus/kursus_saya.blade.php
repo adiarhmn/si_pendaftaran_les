@@ -37,9 +37,9 @@
                                     <span class="badge bg-danger text-capitalize">{{ $item->status_pelatihan }}</span>
                                 @endif
                             </div>
-                            <p class="m-0 text-secondary">
-                                {{ $item->kursus->deskripsi }}
-                            </p>
+                            <div class="m-0" style="font-size: 12px">
+                                {!! $item->kursus->deskripsi !!}
+                            </div>
                             <table style="width: 100%; font-size: 12px; margin-bottom: 10px">
                                 <tbody>
                                     <tr>
@@ -53,16 +53,9 @@
                                         <td>{{ $item->kursus->durasi }} JP</td>
                                     </tr>
                                     <tr>
-                                        <td>Tanggal Mulai</td>
+                                        <td>Harga Pelatihan</td>
                                         <td>:</td>
-                                        <td>{{ Carbon::parse($item->kursus->tanggal_mulai)->translatedFormat('d F Y') }}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Tanggal Selesai</td>
-                                        <td>:</td>
-                                        <td>{{ Carbon::parse($item->kursus->tanggal_selesai)->translatedFormat('d F Y') }}
-                                        </td>
+                                        <td>Rp. {{ number_format($item->kursus->harga, 0, ',', '.') }}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -74,10 +67,17 @@
                                     <tr>
                                         <td style="width: 200px;">Tenggat Pembayaran</td>
                                         <td>:</td>
-                                        <td
-                                            class="fw-bold {{ $item->tgl_tenggat_pembayaran < date('Y-m-d') ? 'text-danger' : '' }}">
-                                            {{ Carbon::parse($item->tgl_tenggat_pembayaran)->translatedFormat('d F Y') }}
-                                        </td>
+                                        @if ($item->tgl_tenggat_pembayaran != null)
+                                            <td
+                                                class="fw-bold {{ $item->tgl_tenggat_pembayaran < date('Y-m-d') ? 'text-danger' : '' }}">
+
+                                                {{ Carbon::parse($item->tgl_tenggat_pembayaran)->translatedFormat('d F Y') }}
+                                            </td>
+                                        @else
+                                            <td>
+                                                -
+                                            </td>
+                                        @endif
                                     </tr>
                                     <tr>
                                         <td>Sisa Tagihan</td>
@@ -121,7 +121,7 @@
                                     </form>
                                 @endif
 
-                                @if ($item->total_pembayaran < 0)
+                                @if ($item->total_pembayaran <= 0)
                                     {{-- Bayar Sebagian --}}
                                     <form action="{{ url('peserta/buat-token-pembayaran') }}" method="POST">
                                         @csrf

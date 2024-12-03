@@ -1,4 +1,13 @@
 @extends('layouts.admin_layout')
+@section('style')
+    {{-- CKEDITOR5 STYLE CUSTOM --}}
+    <link rel="stylesheet" href="{{ url('/') }}/assets/ckeditor5/ckeditor5.css">
+    <style>
+        div[role="textbox"] {
+            min-height: 400px;
+        }
+    </style>
+@endsection
 
 @section('content')
     {{-- @Page Title --}}
@@ -52,18 +61,18 @@
                     {{-- Deskripsi (deskripsi) --}}
                     <div class="col-12">
                         <label for="deskripsi" class="form-label">Deskripsi</label>
-                        <textarea name="deskripsi" class="form-control @error('deskripsi') is-invalid @enderror" id="deskripsi" rows="3"
-                            placeholder="Masukkan Deskripsi Kursus">{{ old('deskripsi', $kursus->deskripsi ?? '') }}</textarea>
                         @error('deskripsi')
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>
                         @enderror
+                        <textarea id="editor" name="deskripsi" class="form-control @error('deskripsi') is-invalid @enderror" id="deskripsi"
+                            rows="3" placeholder="Masukkan Deskripsi Kursus"></textarea>
                     </div>
 
                     {{-- Durasi (durasi) --}}
                     <div class="col-12">
-                        <label for="durasi" class="form-label">Durasi</label>
+                        <label for="durasi" class="form-label">Durasi (x JP)</label>
                         <input name="durasi" value="{{ old('durasi', $kursus->durasi ?? '') }}" type="text"
                             class="form-control @error('durasi') is-invalid @enderror" id="durasi"
                             placeholder="Masukkan Durasi Kursus">
@@ -74,49 +83,11 @@
                         @enderror
                     </div>
 
-                    {{-- Tanggal Mulai (tanggal_mulai) --}}
-                    <div class="col-12">
-                        <label for="tanggal_mulai" class="form-label">Tanggal Mulai</label>
-                        <input name="tanggal_mulai" value="{{ old('tanggal_mulai', $kursus->tanggal_mulai ?? '') }}"
-                            type="date" class="form-control @error('tanggal_mulai') is-invalid @enderror"
-                            id="tanggal_mulai">
-                        @error('tanggal_mulai')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-
-                    {{-- Tanggal Selesai (tanggal_selesai) --}}
-                    <div class="col-12">
-                        <label for="tanggal_selesai" class="form-label">Tanggal Selesai</label>
-                        <input name="tanggal_selesai" value="{{ old('tanggal_selesai', $kursus->tanggal_selesai ?? '') }}"
-                            type="date" class="form-control @error('tanggal_selesai') is-invalid @enderror"
-                            id="tanggal_selesai">
-                        @error('tanggal_selesai')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-
-                    {{-- Jumlah Peserta (jumlah_peserta) --}}
-                    <div class="col-12">
-                        <label for="jumlah_peserta" class="form-label">Jumlah Peserta</label>
-                        <input name="jumlah_peserta" value="{{ old('jumlah_peserta', $kursus->jumlah_peserta ?? '') }}"
-                            type="number" class="form-control @error('jumlah_peserta') is-invalid @enderror"
-                            id="jumlah_peserta" placeholder="Masukkan Jumlah Peserta">
-                        @error('jumlah_peserta')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-
                     {{-- Petugas Selection (id_petugas) --}}
                     <div class="col-12">
                         <label for="id_petugas" class="form-label">Petugas</label>
-                        <select name="id_petugas" class="form-select @error('id_petugas') is-invalid @enderror" id="id_petugas">
+                        <select name="id_petugas" class="form-select @error('id_petugas') is-invalid @enderror"
+                            id="id_petugas">
                             <option value="">Pilih Petugas</option>
                             @foreach ($list_petugas as $item)
                                 <option value="{{ $item->id_petugas }}" @if (old('id_petugas', $kursus->id_petugas ?? '') == $item->id_petugas) selected @endif>
@@ -133,8 +104,8 @@
                     {{-- Gambar Cover --}}
                     <div class="col-12">
                         <label for="gambar_cover" class="form-label">Gambar Cover</label>
-                        <input name="gambar_cover" type="file" class="form-control @error('gambar_cover') is-invalid @enderror"
-                            id="gambar_cover">
+                        <input name="gambar_cover" type="file"
+                            class="form-control @error('gambar_cover') is-invalid @enderror" id="gambar_cover">
                         @error('gambar_cover')
                             <div class="invalid-feedback">
                                 {{ $message }}
@@ -152,4 +123,51 @@
             </div>
         </div>
     </section>
+@endsection
+
+@section('script')
+    <script src="{{ url('/') }}/assets/ckeditor5/ckeditor5.js"></script>
+    <script type="importmap">
+    {
+        "imports": {
+            "ckeditor5": "{{url('/')}}/assets/ckeditor5/ckeditor5.js",
+            "ckeditor5/": "{{url('/')}}/assets/ckeditor5/"
+        }
+    }
+</script>
+    <script type="module">
+        import {
+            ClassicEditor,
+            Essentials,
+            Paragraph,
+            Bold,
+            Italic,
+            Font,
+            List, // Import the List plugin
+            Heading,
+            Alignment,
+            Link,
+            BlockQuote,
+            MediaEmbed
+        } from 'ckeditor5';
+
+        ClassicEditor
+            .create(document.querySelector('#editor'), {
+                plugins: [Essentials, Paragraph, Bold, Italic, Font, List, Heading, Alignment, Link, BlockQuote,
+                    MediaEmbed
+                ],
+                toolbar: [
+                    'undo', 'redo', '|', 'bold', 'italic', 'heading', '|', 'fontColor', 'fontBackgroundColor', '|',
+                    'bulletedList', 'numberedList', '|', 'alignment', '|', 'link', '|',
+                    'blockQuote', '|', 'mediaEmbed',
+                ]
+            })
+            .then(editor => {
+                window.editor = editor;
+                editor.setData(`{!! old('deskripsi', $kursus->deskripsi ?? '') !!}`);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
 @endsection

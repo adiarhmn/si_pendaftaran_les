@@ -34,6 +34,8 @@
 
     {{-- Sweet Alert CSS --}}
     <link rel="stylesheet" href="{{ url('assets/sweetalert2/dist-alert/sweetalert2.min.css') }}">
+
+    @yield('style')
 </head>
 
 <body>

@@ -31,9 +31,7 @@
                                 <td>{{ $kursus->nama_kursus }}</td>
                             </tr>
                             <tr>
-                                <td>Deskripsi</td>
-                                <td>:</td>
-                                <td>{{ $kursus->deskripsi }}</td>
+                                <td colspan="3">{!! $kursus->deskripsi !!}</td>
                             </tr>
                             <tr>
                                 <td>Pengajar / Petugas</td>
@@ -44,16 +42,6 @@
                                 <td>Durasi</td>
                                 <td>:</td>
                                 <td>{{ $kursus->durasi }} jam</td>
-                            </tr>
-                            <tr>
-                                <td>Tanggal Mulai</td>
-                                <td>:</td>
-                                <td>{{ $kursus->tanggal_mulai }}</td>
-                            </tr>
-                            <tr>
-                                <td>Tanggal Selesai</td>
-                                <td>:</td>
-                                <td>{{ $kursus->tanggal_selesai }}</td>
                             </tr>
                             <tr>
                                 <td>Harga</td>
