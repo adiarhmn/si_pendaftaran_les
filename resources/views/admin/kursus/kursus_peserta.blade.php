@@ -212,7 +212,7 @@
                                                                         <ul class="dropdown-menu">
                                                                             <li>
                                                                                 <form
-                                                                                    action="{{ url('admin/pembayaran/konfirmasi') }}"
+                                                                                    action="{{ url('admin/pembayaran-konfirmasi') }}"
                                                                                     method="POST">
                                                                                     @csrf
                                                                                     <input type="hidden"
@@ -227,7 +227,9 @@
                                                                             </li>
                                                                             <li>
                                                                                 <form
-                                                                                    action="{{ url('admin/pembayaran/konfirmasi') }}">
+                                                                                    action="{{ url('admin/pembayaran-konfirmasi') }}"
+                                                                                    method="POST"
+                                                                                    >
                                                                                     @csrf
                                                                                     <input type="hidden"
                                                                                         name="id_pembayaran"
@@ -319,7 +321,7 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <form action="{{ url('admin/kursus/peserta/' . $item->id_kursus) }}"
+                                            <form action="{{ url('admin/kursus/peserta/' . $item->id_peserta_kursus) }}"
                                                 method="POST">
                                                 @csrf
                                                 @method('DELETE')

@@ -121,7 +121,7 @@ class PembayaranController extends Controller
             $pembayaran = new PembayaranModel();
             $pembayaran->id_peserta_kursus = $id_peserta_kursus;
             $pembayaran->total_pembayaran = $paymentResult['gross_amount'];
-            $pembayaran->bukti_pembayaran = $paymentResult['transaction_time'];
+            $pembayaran->bukti_pembayaran = null;
             $pembayaran->status_pembayaran = 'lunas';
             $pembayaran->save();
 

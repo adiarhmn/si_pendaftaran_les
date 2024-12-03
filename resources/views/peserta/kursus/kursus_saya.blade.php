@@ -148,7 +148,7 @@
                                                     aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <table class="table table-bordered">
+                                                <table class="table table-bordered" style="font-size: 12px">
                                                     <thead>
                                                         <tr>
                                                             <th>No</th>
@@ -171,19 +171,26 @@
                                                                 <td>
                                                                     @if ($pembayaran->bukti_pembayaran)
                                                                         {{-- Jika Bukti Pembayaran adalah Datetime bukan file maka dari Midatrans --}}
-                                                                        @if (is_string($pembayaran->bukti_pembayaran))
-                                                                            <span>
-                                                                                Midtrans Payment
-                                                                            </span>
-                                                                        @else
-                                                                            <a href="{{ asset('images/' . $pembayaran->bukti_pembayaran) }}"
-                                                                                target="_blank">Lihat Bukti</a>
-                                                                        @endif
+                                                                        <a href="{{ asset('images/bukti_pembayaran/' . $pembayaran->bukti_pembayaran) }}"
+                                                                            target="_blank">Lihat Bukti</a>
                                                                     @else
-                                                                        -
+                                                                        <span>
+                                                                            Midtrans Payment
+                                                                        </span>
                                                                     @endif
                                                                 </td>
-                                                                <td>{{ $pembayaran->status_pembayaran }}</td>
+                                                                <td>
+                                                                    @if ($pembayaran->status_pembayaran == 'pending')
+                                                                        <span
+                                                                            class="badge bg-warning text-dark">{{ $pembayaran->status_pembayaran }}</span>
+                                                                    @elseif ($pembayaran->status_pembayaran == 'lunas')
+                                                                        <span
+                                                                            class="badge bg-success">{{ $pembayaran->status_pembayaran }}</span>
+                                                                    @else
+                                                                        <span
+                                                                            class="badge bg-danger">{{ $pembayaran->status_pembayaran }}</span>
+                                                                    @endif
+                                                                </td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>

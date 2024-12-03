@@ -89,7 +89,7 @@
                                     </button>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <form action="{{ url('admin/pembayaran/konfirmasi') }}" method="POST">
+                                            <form action="{{ url('admin/pembayaran-konfirmasi') }}" method="POST">
                                                 @csrf
                                                 <input type="hidden" name="id_pembayaran"
                                                     value="{{ $item->id_pembayaran }}">
@@ -98,7 +98,7 @@
                                             </form>
                                         </li>
                                         <li>
-                                            <form action="{{ url('admin/pembayaran/konfirmasi') }}">
+                                            <form action="{{ url('admin/pembayaran-konfirmasi') }}">
                                                 @csrf
                                                 <input type="hidden" name="id_pembayaran"
                                                     value="{{ $item->id_pembayaran }}">

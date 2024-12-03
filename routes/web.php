@@ -105,8 +105,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'checkRole:admin'], function 
     });
 
     // Kelola Pembayaran
+    Route::post('pembayaran-konfirmasi', [PembayaranController::class, 'konfirmasi']);
     Route::group(['prefix' => 'pembayaran'], function () {
         Route::get('/', [PembayaranController::class, 'index']);
-        Route::post('/konfirmasi', [PembayaranController::class, 'konfirmasi']);
     });
 });
