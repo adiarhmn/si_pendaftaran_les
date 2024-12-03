@@ -46,6 +46,7 @@ Route::group(['prefix' => 'peserta', 'middleware' => 'checkRole:peserta'], funct
     Route::get('notification-handler', [PembayaranController::class, 'notificationHandler'])->name('peserta.notification.handler'); // Handler notifikasi pembayaran midtrans
     Route::post('finish-payment', [PembayaranController::class, 'finishPayment'])->name('peserta.finish.payment'); // Handler finish pembayaran midtrans
     Route::get('notification-handler', [PembayaranController::class, 'notificationHandler'])->name('peserta.notification.handler'); // Handler notifikasi pembayaran midtrans
+    
     // Peserta - Profile
     Route::get('profile', [PesertaController::class, 'profile'])->name('peserta.profile'); // Menampilkan halaman profile peserta
     Route::post('profile/{id}', [PesertaController::class, 'update'])->name('peserta.update.profile');

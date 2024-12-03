@@ -44,6 +44,7 @@
                         </tr>
                     </thead>
                     <tbody>
+                        
                         @foreach ($list_kursus as $index => $item)
                             <tr>
                                 <th scope="row">{{ $index + 1 + (($_GET['page'] ?? 1) - 1) * 5 }}</th>

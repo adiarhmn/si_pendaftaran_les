@@ -21,10 +21,10 @@
             <div class="card">
                 <div class="card-body pt-3">
                     <div class="row">
-                        <div class="col-md-2 mb-3">
+                        <div class="col-md-3 mb-3">
                             <img src={{ asset('images/' . $item->kursus->gambar_cover) }} alt="" style="width:100%;">
                         </div>
-                        <div class="col-md-10">
+                        <div class="col-md-9">
                             {{-- Kursus --}}
                             <div class="d-flex gap-1 mb-2">
                                 <h5 class="fw-bold m-0">{{ $item->kursus->nama_kursus }}</h5>

@@ -21,6 +21,8 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+
+            // Redirect based on user level
             if (Auth::user()->level == 'admin') {
                 return redirect()->intended('/admin/dashboard')->with('success', 'Berhasil login');
             } elseif (Auth::user()->level == 'petugas') {

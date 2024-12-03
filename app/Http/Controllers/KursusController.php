@@ -92,8 +92,17 @@ class KursusController extends Controller
         if ($request->hasFile('gambar_cover')) {
             // Menyimpan gambar cover ke folder public/images
             $file = $request->file('gambar_cover');
-            $nama_file = time() . "_kursus_cover";
+            $nama_file = time() . "_kursus_cover" . $file->getClientOriginalExtension();
             $file->move(public_path('images'), $nama_file);
+
+            // Menghapus gambar cover lama
+            $kursus = KursusModel::find($id);
+            if ($kursus->gambar_cover) {
+                // jika file exist
+                if (file_exists(public_path('images/' . $kursus->gambar_cover))) {
+                    unlink(public_path('images/' . $kursus->gambar_cover));
+                }
+            }
         }
 
         // Mengupdate data kursus ke database
